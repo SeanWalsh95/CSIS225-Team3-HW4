@@ -1,2 +1,2 @@
-# CSIS225-Team3-HW4
-Khet
+# CSIS225-HW4
+Laser Game
