@@ -29,6 +29,21 @@ class Obelisk extends GamePiece{
         this.direction = direction;
     }
     
+    
+    /**
+     * Basic constructor for the Obelisk class
+     * 
+     * @param team The name of the team that the piece belongs to
+     * @param direction The initial direction the piece will be facing
+     * @param stacked indicates if the obelisk is stakced with another obelisk
+     */
+    public Obelisk(String team, int direction, boolean stacked){
+        this();
+        this.team = team;
+        this.direction = direction;
+        this.stacked = stacked;
+    }
+    
     /**
      * Method to find how the GamePeice affects the laser
      * 

@@ -13,8 +13,10 @@ public class GameBoard extends JPanel{
     private GamePiece[][] board = new GamePiece[8][10];
     private int[] clickedTile = new int[2];
 
+    protected ArrayList<int[]> whiteOnlyTiles, redOnlyTiles;
+
     protected Laser laser = new Laser();
-    
+
     private boolean movingGamePiece = false, movePointASelected = false, movePointBSelected = false;
     int[] movePointA = new int[]{-1,-1};
     int[] movePointB = new int[]{-1,-1};
@@ -23,6 +25,30 @@ public class GameBoard extends JPanel{
      * Basic constructor for the GameBoard class initializes the board to the classic setup
      */
     public GameBoard(){
+        whiteOnlyTiles = new ArrayList<int[]>();
+        whiteOnlyTiles.add(new int[]{0,1});
+        whiteOnlyTiles.add(new int[]{7,1});
+        whiteOnlyTiles.add(new int[]{0,9});
+        whiteOnlyTiles.add(new int[]{1,9});
+        whiteOnlyTiles.add(new int[]{2,9});
+        whiteOnlyTiles.add(new int[]{3,9});
+        whiteOnlyTiles.add(new int[]{4,9});
+        whiteOnlyTiles.add(new int[]{5,9});
+        whiteOnlyTiles.add(new int[]{6,9});
+        whiteOnlyTiles.add(new int[]{7,9});
+        
+        redOnlyTiles = new ArrayList<int[]>();
+        redOnlyTiles.add(new int[]{0,8});
+        redOnlyTiles.add(new int[]{7,8});
+        redOnlyTiles.add(new int[]{0,0});
+        redOnlyTiles.add(new int[]{1,0});
+        redOnlyTiles.add(new int[]{2,0});
+        redOnlyTiles.add(new int[]{3,0});
+        redOnlyTiles.add(new int[]{4,0});
+        redOnlyTiles.add(new int[]{5,0});
+        redOnlyTiles.add(new int[]{6,0});
+        redOnlyTiles.add(new int[]{7,0});
+
         setBoardClassic();
     }
 
@@ -35,7 +61,16 @@ public class GameBoard extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         int topBorder = (this.getHeight()-408)/2;
-        int leftBorder = (this.getWidth()-510)/2; 
+        int leftBorder = (this.getWidth()-510)/2;
+        for(int[] p : whiteOnlyTiles){
+            g.setColor(new Color(180,180,180));
+            g.fillRect(leftBorder+(p[1]*51), topBorder+(p[0]*51),50,50);
+        }
+        for(int[] p : redOnlyTiles){
+            g.setColor(new Color(255,85,80));
+            g.fillRect(leftBorder+(p[1]*51), topBorder+(p[0]*51),50,50);
+        }
+
         for(int row=0; row < 8; row++){
             for(int col=0; col < 10; col++){
                 g.setColor(Color.black);
@@ -44,6 +79,14 @@ public class GameBoard extends JPanel{
                 if(!(board[row][col] instanceof NullPiece)){
                     Image gpImage = Toolkit.getDefaultToolkit().getImage(board[row][col].getImage());
                     g.drawImage(gpImage, leftBorder+(col*51), topBorder+(row*51), this);
+                    if(board[row][col] instanceof Obelisk){
+                        Obelisk ob = (Obelisk) board[row][col];
+                        if(ob.stacked){
+                            g.setColor(Color.BLUE);	
+                            Point p = board[row][col].getCenterPoint();
+                            g.fillOval((int)p.getX()-5,(int)p.getY()-5,10,10);
+                        }
+                    }
                 }
             }
         }
@@ -101,7 +144,7 @@ public class GameBoard extends JPanel{
             return false;
         }
     }
-    
+
     /**
      * rotates a given game peice on the board clockwise
      * 
@@ -131,7 +174,7 @@ public class GameBoard extends JPanel{
         board[tileA[0]][tileA[1]] = gpB;
         board[tileB[0]][tileB[1]] = gpA;
     }
-    
+
     /**
      * Method for obelisk piece stacking movement
      * 
@@ -142,7 +185,7 @@ public class GameBoard extends JPanel{
         board[tileA[0]][tileA[1]] = new NullPiece();
         ((Obelisk)board[tileB[0]][tileB[1]]).stacked = true;
     }
-    
+
     /**
      * Method for obelisk piece unstacking movement
      * 
@@ -277,7 +320,7 @@ public class GameBoard extends JPanel{
     public void removePiece(int row, int col){
         board[row][col] = new NullPiece();
     }
-    
+
     /**
      * shows the valid moves for a given tile coordinates
      * 
