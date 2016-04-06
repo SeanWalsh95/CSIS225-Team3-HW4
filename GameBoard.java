@@ -9,7 +9,7 @@ import java.awt.event.*;
  * @version (a version number or a date)
  */
 public class GameBoard extends JPanel{
-    protected String currentPlayer = "";
+    protected String currentPlayer = "white";
     private GamePiece[][] board = new GamePiece[8][10];
     private int[] clickedTile = new int[2];
 
@@ -246,6 +246,31 @@ public class GameBoard extends JPanel{
      */
     public void setBoardImhotep(){
         clearBoard();
+        board[3][0] = new Pyramid("red",0);
+        board[4][0] = new Pyramid("red",90);
+        board[2][6] = new Pyramid("red",0);
+        board[5][6] = new Pyramid("red",90);
+        board[3][8] = new Pyramid("red",90);
+        board[4][8] = new Pyramid("red",0);
+        board[4][5] = new Pyramid("red",270);
+        board[0][4] = new Obelisk("red",0);
+        board[0][6] = new Obelisk("red",0);
+        board[3][5] = new Djed("red",90);
+        board[0][7] = new Djed("red",90);
+        board[0][5] = new Pharaoh("red",0);
+
+        board[4][9] = new Pyramid("white",180);
+        board[3][9] = new Pyramid("white",270);
+        board[2][3] = new Pyramid("white",270);
+        board[5][3] = new Pyramid("white",180);
+        board[4][1] = new Pyramid("white",270);
+        board[3][1] = new Pyramid("white",180);
+        board[3][4] = new Pyramid("white",90);
+        board[7][5] = new Obelisk("white",0);
+        board[7][3] = new Obelisk("white",0);
+        board[4][4] = new Djed("white",90);
+        board[7][2] = new Djed("white",90);
+        board[7][4] = new Pharaoh("white",0);
     }
 
     /**
@@ -253,6 +278,31 @@ public class GameBoard extends JPanel{
      */
     public void setBoardDynasty(){
         clearBoard();
+        board[2][0] = new Pyramid("red",0);
+        board[3][0] = new Pyramid("red",90);
+        board[0][4] = new Pyramid("red",180);
+        board[2][4] = new Pyramid("red",180);
+        board[4][3] = new Pyramid("red",270);
+        board[0][6] = new Pyramid("red",90);
+        board[4][5] = new Pyramid("red",90);
+        board[0][5] = new Obelisk("red",0);
+        board[2][5] = new Obelisk("red",0);
+        board[3][2] = new Djed("red",0);
+        board[2][6] = new Djed("red",90);
+        board[1][5] = new Pharaoh("red",0);
+        
+        board[5][9] = new Pyramid("white",180);
+        board[4][9] = new Pyramid("white",270);
+        board[3][6] = new Pyramid("white",90);
+        board[5][5] = new Pyramid("white",0);
+        board[7][5] = new Pyramid("white",0);
+        board[7][3] = new Pyramid("white",180);
+        board[3][4] = new Pyramid("white",270);
+        board[4][7] = new Djed("white",0);
+        board[5][3] = new Djed("white",90);
+        board[7][4] = new Obelisk("white",0);
+        board[5][4] = new Obelisk("white",0);
+        board[6][4] = new Pharaoh("white",0);
     }
 
     /**
@@ -260,15 +310,8 @@ public class GameBoard extends JPanel{
      */
     public void setBoardCustom(){
         clearBoard();
-        board[0][4] = new Pharaoh();
-        board[2][0] = new Pyramid();
-        board[2][4] = new Pyramid("red",180);
-        board[3][4] = new Pyramid("red",270);
-        board[3][2] = new Pyramid("red",0);
-        board[1][2] = new Djed("red",90);
-        board[1][5] = new Djed();
-        board[3][5] = new Djed("red",180);
-        board[3][6] = new Djed("red",270);
+        board[7][0] = new Pharaoh("red",0);
+        board[0][9] = new Pharaoh("white",0);
     }
 
     /**

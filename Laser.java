@@ -64,7 +64,7 @@ public class Laser extends JComponent
             effect = "missed";
         }
         if(newDirection == -1){
-            laserDetails = "Laser Destroyed a "
+            laserDetails = "Laser destroyed a "
             + board[p[0]][p[1]].team + " "
             + board[p[0]][p[1]].name;
             effect = "hit piece";

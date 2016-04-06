@@ -17,14 +17,10 @@ implements MouseListener, ActionListener{
     JPanel textPanel,buttonPanel, boardPanel;
     JButton endTurnButton, continueButton, instructionsButton; 
     JLabel lastPointLBL, infoLBL, currentPlayerLBL, moveUnitLBL;
-    //boolean flags to determine who's move it currently is
 
-    private boolean redMove = false, whiteMove = true, turnEnded = false;
+    private boolean redMove = false, whiteMove = true, turnEnded = false, gameOver = false;
 
     private int xClickA, yClickA, xClickB, yClickB;
-
-    int[] movePointA = new int[]{-1,-1};
-    int[] movePointB = new int[]{-1,-1};
 
     /**
      * Called by the browser or applet viewer to inform this JApplet that it
@@ -44,10 +40,9 @@ implements MouseListener, ActionListener{
         board.setBorder(BorderFactory.createTitledBorder(
                 "This is the Game Board Panel"));
 
-        board.currentPlayer = "white";
         lastPointLBL = new JLabel("");
         infoLBL = new JLabel("");
-        currentPlayerLBL = new JLabel("Current Player: "+board.currentPlayer);
+        currentPlayerLBL = new JLabel("");
         moveUnitLBL = new JLabel("");
 
         textPanel = new JPanel(new FlowLayout());
@@ -73,32 +68,77 @@ implements MouseListener, ActionListener{
         this.add(textPanel,BorderLayout.SOUTH);
         this.add(board,BorderLayout.CENTER);
 
+        setPlayerWhite();//defaults to white
+        selectStartingPlayer();
+        selectStartingConfig();
+
         endTurnButton.addActionListener( this );
         continueButton.addActionListener( this );
         instructionsButton.addActionListener( this );
         addMouseListener( this );
     }
 
+    /**
+     * Presents user with the option of setting the starting player
+     */
+    public void selectStartingPlayer(){
+        String[] jOptionButtons = { "Red", "White" };
+        int playerStartChoice = JOptionPane.showOptionDialog(null, "Who will start?", "choose a starting player", 
+                JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons, jOptionButtons[1]);
+        if(playerStartChoice == 0)
+            setPlayerRed();
+        else
+            setPlayerWhite();
+    }
+
+    /**
+     * Presents user with the option of setting the starting board configuration
+     */
+    public void selectStartingConfig(){
+        String[] jOptionButtons = { "Classic", "Imhotep", "Dynasty", "Custom" };
+        int playerStartChoice = JOptionPane.showOptionDialog(null, "starting layout?", "choose a starting layout", 
+                JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons, jOptionButtons[0]);
+        if(playerStartChoice == 0)
+            board.setBoardClassic();
+        else if(playerStartChoice == 1){
+            board.setBoardImhotep();
+        }else if(playerStartChoice == 2){
+            board.setBoardDynasty();
+        }else if(playerStartChoice == 3){
+            board.setBoardCustom();
+        }
+    }
+
+    /**
+     * method to handle button actions
+     * 
+     * @param e A buttons ActionEvent
+     */
     public void actionPerformed(ActionEvent e){
         String command = e.getActionCommand();
         if("EndTurn".equals(command)){
             continueButton.setEnabled(true);
             endTurnButton.setEnabled(false);
-            infoLBL.setText("");
-            checkWinConditions();
+            board.laser.showLaser = true;
+            repaint();
+            //checkWinConditions();
         }
         if("Continue".equals(command)){
-            turnEnded = false;
-            if(board.laser.effect.equals("hit piece")){
-                board.removePiece(board.laser.lastHit[0],board.laser.lastHit[1]);
+            if(gameOver){
+
+            } else {
+                turnEnded = false;
+                checkWinConditions();
+                if(board.laser.effect.equals("hit piece")){
+                }
+                swapPlayers();
+                currentPlayerLBL.setText("Currnet Player: "+board.currentPlayer);
+                textPanel.repaint();
+                board.laser.showLaser = false;
+                continueButton.setEnabled(false);
+                endTurnButton.setEnabled(true);
+                repaint();
             }
-            swapPlayers();
-            currentPlayerLBL.setText("Currnet Player: "+board.currentPlayer);
-            textPanel.repaint();
-            board.laser.showLaser = false;
-            continueButton.setEnabled(false);
-            endTurnButton.setEnabled(true);
-            repaint();
         }
         if("Instructions".equals(command)){
             informUserPopup("Left Click = Rotate CounterClockwise\n"+
@@ -113,11 +153,17 @@ implements MouseListener, ActionListener{
 
     public void mouseClicked( MouseEvent e ) {}
 
+    /**
+     * method to find the location of press of the mouse
+     */
     public void mousePressed( MouseEvent e ) {
         xClickA = e.getX();
         yClickA = e.getY();
     }
 
+    /**
+     * method to find the released location of the mouse and perform and action based on the diffrence between the press and the release
+     */
     public void mouseReleased( MouseEvent e ) {
         xClickB = e.getX();
         yClickB = e.getY();
@@ -139,6 +185,12 @@ implements MouseListener, ActionListener{
         }
     }
 
+    /**
+     * method to rotate a given game peice
+     * 
+     * @param tile an int array of size 2 that holds the position of the Piece on the board
+     * @param rotateRight boolean to indacate weather the piece should be turned right or left
+     */
     public void rotateGamePiece(int[] tile, boolean rotateRight){
         GamePiece gp = board.getPiece(tile[0],tile[1]);
         if(gp.team.equals(board.currentPlayer)){
@@ -151,6 +203,12 @@ implements MouseListener, ActionListener{
         }
     }
 
+    /**
+     * method to move game piece on the board from one tile to another
+     * 
+     * @param tileA an int array of size 2 that holds the position of the piece to be moved
+     * @param tileB an int array of size 2 that holds the position of the tile the peice is to be moved to
+     */
     public void movingGamePiece(int[] tileA, int[] tileB){
         GamePiece gpA = board.getPiece(tileA[0],tileA[1]);
         GamePiece gpB = board.getPiece(tileB[0],tileB[1]);
@@ -180,6 +238,13 @@ implements MouseListener, ActionListener{
         }
     }
 
+    /**
+     * method to check if a move is valid according to the game rules
+     * 
+     * @param a an int array of size 2 that holds the position of the piece to be moved
+     * @param b an int array of size 2 that holds the position of the tile the peice is to be moved to
+     * @return true if the move is a valid move false if it is not
+     */
     public boolean checkValidMove(int[] a, int[] b){
         GamePiece tileA = board.getPiece(a[0],a[1]);
         GamePiece tileB = board.getPiece(b[0],b[1]);
@@ -216,7 +281,11 @@ implements MouseListener, ActionListener{
     }
 
     /**
-     * returns true if in range false if out of range
+     * method that checks to see if the intended position to move a given peice is within one tile in any direction
+     * 
+     * @param a an int array of size 2 that holds the position of the piece to be moved
+     * @param b an int array of size 2 that holds the position of the tile the peice is to be moved to
+     * @return true if in range false if out of range
      */
     public boolean checkRangeOfMove(int[] a, int[] b){
         ArrayList<int[]> validMoves = new ArrayList<int[]>();
@@ -281,18 +350,30 @@ implements MouseListener, ActionListener{
     {
         // simple text displayed on applet
         clearWindow(g);
-
+        textPanel.repaint();
         board.repaint();
     }
 
+    /**
+     * paints a white rectangele the current size of the applet to clear the screen
+     * 
+     * @param  g   the Graphics object for this applet
+     */
     public void clearWindow(Graphics g){
-        g.setColor(Color.white);
-        //g.setColor(Color.green);
+        g.setColor(Color.WHITE);
         g.fillRect(0, 0, (int) this.getWidth(), (int) this.getHeight());
-        textPanel.repaint();
         buttonPanel.repaint();
     }
 
+    /**
+     * method to translate pixel coordinates into tile coordinates
+     * 
+     * @param x position in px to be converted into a column location
+     * @param y position in px to be converted into a row location
+     * @return an int array of size 2 containing the translated tile coordinates
+     * bolth indices will be -1 if the x, y coordinates are out of the bounds of the board
+     * 
+     */
     public int[] getTile(int x, int y){
         int topBorder = (this.getHeight()-408)/2;
         int leftBorder = (this.getWidth()-510)/2; 
@@ -306,23 +387,43 @@ implements MouseListener, ActionListener{
             return new int[]{-1,-1};
     }
 
+    /**
+     * method to swap the currnet player with the waiting player
+     */
     public void swapPlayers(){
         if(redMove){
-            //set start to white start
-            board.currentPlayer = "white";
-            redMove = false;
-            whiteMove = true;
-            return;
-        }
-        if(whiteMove){
-            //set start to red start
-            board.currentPlayer = "red";
-            whiteMove = false;
-            redMove = true;
-            return;
+            setPlayerWhite();
+        }else{
+            setPlayerRed(); 
         }
     }
 
+    /**
+     * method to set currnet player to red
+     */
+    public void setPlayerRed(){
+        board.currentPlayer = "red";
+        textPanel.setBackground(new Color(255,85,80));
+        currentPlayerLBL.setText("Current Player: "+board.currentPlayer);
+        whiteMove = false;
+        redMove = true;
+    }
+
+    /**
+     * method to set currnet player to white
+     */
+    public void setPlayerWhite(){
+        board.currentPlayer = "white";
+        textPanel.setBackground(new Color(180,180,180));
+        currentPlayerLBL.setText("Current Player: "+board.currentPlayer);
+        redMove = false;
+        whiteMove = true;
+    }
+
+    /**
+     * toggles the visibility of the laser
+     * 
+     */
     public void toggleLaser(){
         if(board.laser.showLaser){
             board.laser.showLaser = false;
@@ -376,22 +477,28 @@ implements MouseListener, ActionListener{
         return paramInfo;
     }
 
+    /**
+     * method to check if a player has won the game
+     */
     public void checkWinConditions(){
-        board.laser.showLaser = true;
-        repaint();
         if(board.laser.effect.equals("hit piece")){
-            infoLBL.setText(board.laser.laserDetails);
+            informUserPopup(board.laser.laserDetails,"Piece Destroyed");
             GamePiece gp = board.getPiece(board.laser.lastHit[0],board.laser.lastHit[1]);
             if(gp.name.equals("Pharaoh")){
                 if(gp.team.equals("white")){
-                    infoLBL.setText("RED WINS");
+                    informUserPopup("RED WINS", "Winner");
                 }else{
-                    infoLBL.setText("WHITE WINS");  
+                    informUserPopup("WHITE WINS", "Winner");
                 }
+                gameOver = true;
             }
+            board.removePiece(board.laser.lastHit[0],board.laser.lastHit[1]);
         }
     }
 
+    /**
+     * method to show a popup window the the user with informative text
+     */
     public static void informUserPopup(String message, String titleBar)
     {
         JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
