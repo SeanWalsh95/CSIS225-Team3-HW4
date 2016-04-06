@@ -36,7 +36,7 @@ public class GameBoard extends JPanel{
         whiteOnlyTiles.add(new int[]{5,9});
         whiteOnlyTiles.add(new int[]{6,9});
         whiteOnlyTiles.add(new int[]{7,9});
-        
+
         redOnlyTiles = new ArrayList<int[]>();
         redOnlyTiles.add(new int[]{0,8});
         redOnlyTiles.add(new int[]{7,8});
@@ -82,7 +82,7 @@ public class GameBoard extends JPanel{
                     if(board[row][col] instanceof Obelisk){
                         Obelisk ob = (Obelisk) board[row][col];
                         if(ob.stacked){
-                            g.setColor(Color.BLUE);	
+                            g.setColor(Color.BLUE); 
                             Point p = board[row][col].getCenterPoint();
                             g.fillOval((int)p.getX()-5,(int)p.getY()-5,10,10);
                         }
@@ -318,7 +318,16 @@ public class GameBoard extends JPanel{
      * @param col The column component of the coordinates
      */
     public void removePiece(int row, int col){
-        board[row][col] = new NullPiece();
+        GamePiece gp = board[row][col];
+        if(gp instanceof Obelisk){
+            Obelisk ob = (Obelisk) gp;
+            if(ob.stacked){
+                ob.stacked = false;
+            }else{
+                board[row][col] = new NullPiece();
+            }
+        }else
+            board[row][col] = new NullPiece();
     }
 
     /**

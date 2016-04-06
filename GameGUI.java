@@ -15,13 +15,13 @@ implements MouseListener, ActionListener{
     GameBoard board = new GameBoard();
 
     JPanel textPanel,buttonPanel, boardPanel;
-    JButton laserButton, endTurnButton, moveButton, rotateLeftButton, rotateRightButton, continueButton; 
+    JButton endTurnButton, continueButton, instructionsButton; 
     JLabel lastPointLBL, infoLBL, currentPlayerLBL, moveUnitLBL;
     //boolean flags to determine who's move it currently is
 
-    private boolean rotateGamePieceLeft = false, rotateGamePieceRight = false;
     private boolean redMove = false, whiteMove = true, turnEnded = false;
-    private boolean movingGamePiece = false, movePointASelected = false, movePointBSelected = false;
+
+    private int xClickA, yClickA, xClickB, yClickB;
 
     int[] movePointA = new int[]{-1,-1};
     int[] movePointB = new int[]{-1,-1};
@@ -56,72 +56,33 @@ implements MouseListener, ActionListener{
         textPanel.add(currentPlayerLBL);
         textPanel.add(moveUnitLBL);
 
-        laserButton = new JButton("Draw Laser");
-        laserButton.setActionCommand("DrawLaser");
         endTurnButton = new JButton("End Turn");
         endTurnButton.setActionCommand("EndTurn");
-        moveButton = new JButton("Move Peice");
-        moveButton.setActionCommand("MovePeice");
-        rotateLeftButton = new JButton("Rotate Left");
-        rotateLeftButton.setActionCommand("RotateLeft");
-        rotateRightButton = new JButton("Rotate Right");
-        rotateRightButton.setActionCommand("RotateRight");
         continueButton = new JButton("Continue");
         continueButton.setActionCommand("Continue");
         continueButton.setEnabled(false);
+        instructionsButton = new JButton("instructions");
+        instructionsButton.setActionCommand("Instructions");
 
         buttonPanel = new JPanel(new FlowLayout());
-        //buttonPanel.add(laserButton);
-        buttonPanel.add(rotateLeftButton);
-        buttonPanel.add(rotateRightButton);
-        buttonPanel.add(moveButton);
         buttonPanel.add(endTurnButton);
         buttonPanel.add(continueButton);
+        buttonPanel.add(instructionsButton);
 
         this.add(buttonPanel,BorderLayout.NORTH);
         this.add(textPanel,BorderLayout.SOUTH);
         this.add(board,BorderLayout.CENTER);
 
-        //laserButton.addActionListener( this );
         endTurnButton.addActionListener( this );
-        moveButton.addActionListener( this );
-        rotateLeftButton.addActionListener( this );
-        rotateRightButton.addActionListener( this );
         continueButton.addActionListener( this );
+        instructionsButton.addActionListener( this );
         addMouseListener( this );
     }
 
     public void actionPerformed(ActionEvent e){
         String command = e.getActionCommand();
-        if ("DrawLaser".equals(command)) {
-            toggleLaser();
-        }
-        if("MovePeice".equals(command)){
-            if(turnEnded)
-                infoLBL.setText("your turn is you cannot make any more moves");
-            else{
-                movePointASelected = false;
-                movePointBSelected = false;
-                movingGamePiece = true;
-            }
-        }
-        if("RotateLeft".equals(command)){
-            if(turnEnded)
-                infoLBL.setText("your turn is you cannot make any more moves");
-            else
-                rotateGamePieceLeft = true;
-        }
-        if("RotateRight".equals(command)){
-            if(turnEnded)
-                infoLBL.setText("your turn is you cannot make any more moves");
-            else
-                rotateGamePieceRight = true;
-        }
         if("EndTurn".equals(command)){
             continueButton.setEnabled(true);
-            rotateLeftButton.setEnabled(false);
-            rotateRightButton.setEnabled(false);
-            moveButton.setEnabled(false);
             endTurnButton.setEnabled(false);
             infoLBL.setText("");
             checkWinConditions();
@@ -136,11 +97,13 @@ implements MouseListener, ActionListener{
             textPanel.repaint();
             board.laser.showLaser = false;
             continueButton.setEnabled(false);
-            rotateLeftButton.setEnabled(true);
-            rotateRightButton.setEnabled(true);
-            moveButton.setEnabled(true);
             endTurnButton.setEnabled(true);
             repaint();
+        }
+        if("Instructions".equals(command)){
+            informUserPopup("Left Click = Rotate CounterClockwise\n"+
+                "Right Click = Rotate Clockwise\n"+
+                "Click Drag = move unit","Instructions");
         }
     }
 
@@ -148,80 +111,73 @@ implements MouseListener, ActionListener{
 
     public void mouseExited( MouseEvent e ) {}
 
-    public void mousePressed( MouseEvent e ) {}
+    public void mouseClicked( MouseEvent e ) {}
 
-    public void mouseReleased( MouseEvent e ) {}
+    public void mousePressed( MouseEvent e ) {
+        xClickA = e.getX();
+        yClickA = e.getY();
+    }
 
-    public void mouseClicked( MouseEvent e ) {
-        int x = e.getX();
-        int y = e.getY();
-        int[] selectedTile = getTile(x,y);
-        int tileX = selectedTile[0];
-        int tileY = selectedTile[1];
-
-        lastPointLBL.setText("X:"+x+" Y:"+y);
-
-        if(movingGamePiece){
-            if(!movePointASelected || !movePointBSelected){
-                GamePiece gp = board.getPiece(selectedTile[0],selectedTile[1]);
-                if(!movePointASelected){
-                    if (!(gp instanceof NullPiece)){
-                        movePointA = new int[]{selectedTile[0],selectedTile[1]};
-                        movePointASelected = true;
-                    }
-                }else if(!movePointBSelected){
-                    movePointB = new int[]{selectedTile[0],selectedTile[1]};
-                    movePointBSelected = true;
-                }
+    public void mouseReleased( MouseEvent e ) {
+        xClickB = e.getX();
+        yClickB = e.getY();
+        int[] tileA = getTile(xClickA,yClickA);
+        int[] tileB = getTile(xClickB,yClickB);
+        //lastPointLBL.setText("["+tileA[0]+","+tileA[1]+"] ["+tileB[0]+","+tileB[1]+"]");
+        //lastPointLBL.setText("["+xClickA+","+yClickA+"] ["+xClickB+","+yClickB+"]");
+        if(!turnEnded){
+            if( tileA[0] == tileB[0] && tileA[1] == tileB[1]){//rotate
+                if (e.getButton() == MouseEvent.BUTTON1)
+                    rotateGamePiece(tileA,true);
+                else
+                    rotateGamePiece(tileA,false);
+            }else if(checkRangeOfMove(tileA,tileB)){//move
+                movingGamePiece(tileA,tileB);
             }
-            if(movePointASelected && movePointBSelected){
-                GamePiece gpA = board.getPiece(movePointA[0],movePointA[1]);
-                GamePiece gpB = board.getPiece(movePointB[0],movePointB[1]);
-
-                if(gpA instanceof Obelisk && gpB instanceof Obelisk){
-                    board.stackObelisk(movePointA,movePointB);
-                    turnEnded = true;
-                    repaint();
-                }else if(gpA instanceof Obelisk){
-                    Obelisk ob = (Obelisk) gpA;
-                    boolean unstack = true;
-                    //check if they want to unstack or move the stack store in unstack
-                    if(checkValidMove(movePointA,movePointB)){
-                        if(ob.stacked && unstack){
-                            board.unstackObelisk(movePointA,movePointB);
-                            turnEnded = true;
-                            repaint();
-                        }else{
-                            board.movePiece(movePointA,movePointB);
-                            turnEnded = true;
-                            repaint();
-                        }
-                    }
-                }else if(checkValidMove(movePointA,movePointB)){
-                    board.movePiece(movePointA,movePointB);
-                    turnEnded = true;
-                    repaint();
-                }
-
-                movePointASelected = false;
-                movePointBSelected = false;
-                movingGamePiece = false;
-            }
+        }else{
+            informUserPopup("you have no more moves left this turn \n end your turn","Error");
         }
-        if(rotateGamePieceLeft || rotateGamePieceRight){
-            GamePiece gp = board.getPiece(selectedTile[0],selectedTile[1]);
-            if(gp.team.equals(board.currentPlayer)){
-                if(rotateGamePieceLeft){
-                    board.rotatePieceLeft(selectedTile[0],selectedTile[1]);
-                }else{
-                    board.rotatePieceRight(selectedTile[0],selectedTile[1]);
-                }
+    }
+
+    public void rotateGamePiece(int[] tile, boolean rotateRight){
+        GamePiece gp = board.getPiece(tile[0],tile[1]);
+        if(gp.team.equals(board.currentPlayer)){
+            if(rotateRight)
+                board.rotatePieceLeft(tile[0],tile[1]);
+            else
+                board.rotatePieceRight(tile[0],tile[1]);
+            turnEnded = true;
+            repaint();
+        }
+    }
+
+    public void movingGamePiece(int[] tileA, int[] tileB){
+        GamePiece gpA = board.getPiece(tileA[0],tileA[1]);
+        GamePiece gpB = board.getPiece(tileB[0],tileB[1]);
+        if(gpA instanceof Obelisk || gpB instanceof Obelisk){
+            if(gpA instanceof Obelisk && gpB instanceof Obelisk){
+                board.stackObelisk(tileA,tileB);
                 turnEnded = true;
+                repaint();
+            }else{
+                Obelisk ob = (Obelisk) gpA;
+                boolean unstack = false;
+                //check if they want to unstack or move the stack store in unstack
+                if(ob.stacked && unstack){
+                    board.unstackObelisk(tileA,tileB);
+                    turnEnded = true;
+                    repaint();
+                }else if(checkValidMove(tileA,tileB)){
+                    board.movePiece(tileA,tileB);
+                    turnEnded = true;
+                    repaint();
+                }
             }
-            rotateGamePieceLeft = false;
-            rotateGamePieceRight = false;
+        }else if(checkValidMove(tileA,tileB)){
+            board.movePiece(tileA,tileB);
+            turnEnded = true;
+            repaint();
         }
-        e.consume();
     }
 
     public boolean checkValidMove(int[] a, int[] b){
@@ -231,33 +187,28 @@ implements MouseListener, ActionListener{
         infoLBL.setText("");
 
         if(!tileA.team.equals(board.currentPlayer)){
-            infoLBL.setText("not your unit");
+            informUserPopup("not your unit","Error");
             return false;
         }
 
         if(tileA.team.equals("white")){
             for(int[] pt : board.redOnlyTiles){
                 if( (b[0] == pt[0]) && (b[1] == pt[1]) ){
-                    infoLBL.setText("white cannot move here");
+                    informUserPopup("white cannot move here","Error");
                     return false;
                 }
             }
         }else{
             for(int[] pt : board.whiteOnlyTiles){
                 if( (b[0] == pt[0]) && (b[1] == pt[1]) ){
-                    infoLBL.setText("red cannot move here");
+                    informUserPopup("red cannot move here","Error");
                     return false;
                 }
             }
         }
 
-        if(!checkRangeOfMove(new int[]{a[0],a[1]},new int[]{b[0],b[1]})){
-            infoLBL.setText("cant move that far");
-            return false;
-        }
-
-        if( (!(tileA instanceof Djed)) && (!(tileB instanceof NullPiece))){
-            infoLBL.setText("only djed can swap");
+        if(!(tileA instanceof Djed) && !(tileB instanceof NullPiece)){
+            informUserPopup("only djed can swap","Error");
             return false;
         } 
 
@@ -294,6 +245,7 @@ implements MouseListener, ActionListener{
                 return true;
             }
         }
+        informUserPopup("unit cannot move that far","Error");
         return false;
     }
 
@@ -348,7 +300,10 @@ implements MouseListener, ActionListener{
         int tileCol = (x-(leftBorder+1))/51;
         int tileRow = (y-(topBorder+1))/51;
 
-        return new int[]{tileRow,tileCol};
+        if(tileRow >= 0 && tileRow < 8 && tileCol >= 0 && tileCol < 10)
+            return new int[]{tileRow,tileCol};
+        else
+            return new int[]{-1,-1};
     }
 
     public void swapPlayers(){
@@ -435,5 +390,10 @@ implements MouseListener, ActionListener{
                 }
             }
         }
+    }
+
+    public static void informUserPopup(String message, String titleBar)
+    {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 }
