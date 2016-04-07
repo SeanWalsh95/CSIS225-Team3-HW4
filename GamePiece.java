@@ -9,7 +9,7 @@ public abstract class GamePiece
     String image = "recources\\gamePieces\\";
     String name, team;
     int direction;  //direction peice is pointing
-
+    
     int xPos, yPos;
 
     public void setXYpos(int x, int y){
@@ -22,7 +22,7 @@ public abstract class GamePiece
     }
 
     public Point getCenterPoint(){
-        return new Point(xPos+25, yPos+25);
+        return new Point(xPos+(GameBoard.tileSize/2), yPos+(GameBoard.tileSize/2));
     }
 
     /**

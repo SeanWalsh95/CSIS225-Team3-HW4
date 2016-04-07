@@ -37,8 +37,12 @@ implements MouseListener, ActionListener{
         JRootPane rootPane = this.getRootPane();    
         rootPane.putClientProperty("defeatSystemEventQueueCheck", Boolean.TRUE);
 
-        board.setBorder(BorderFactory.createTitledBorder(
-                "This is the Game Board Panel"));
+        int appletWidth = (((GameBoard.tileSize+GameBoard.borderSize)*10)+GameBoard.tileSize*2);
+        int appletHeight = (((GameBoard.tileSize+GameBoard.borderSize)*8)+GameBoard.tileSize*2);
+        
+        this.setSize(new Dimension(appletWidth,appletHeight));
+        
+        board.setBorder(BorderFactory.createTitledBorder("Game Board"));
 
         lastPointLBL = new JLabel("");
         infoLBL = new JLabel("");
@@ -375,11 +379,14 @@ implements MouseListener, ActionListener{
      * 
      */
     public int[] getTile(int x, int y){
-        int topBorder = (this.getHeight()-408)/2;
-        int leftBorder = (this.getWidth()-510)/2; 
+        int topBorder = (this.getHeight()-((board.tileSize+board.borderSize)*8))/2;
+        int leftBorder = (this.getWidth()-((board.tileSize+board.borderSize)*10))/2;
 
-        int tileCol = (x-(leftBorder+1))/51;
-        int tileRow = (y-(topBorder+1))/51;
+        //int topBorder = (this.getHeight()-408)/2;
+        //int leftBorder = (this.getWidth()-510)/2; 
+
+        int tileCol = (x-(leftBorder+board.borderSize))/(board.tileSize+board.borderSize);
+        int tileRow = (y-(topBorder+board.borderSize))/(board.tileSize+board.borderSize);
 
         if(tileRow >= 0 && tileRow < 8 && tileCol >= 0 && tileCol < 10)
             return new int[]{tileRow,tileCol};

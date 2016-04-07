@@ -9,17 +9,13 @@ import java.awt.event.*;
  * @version (a version number or a date)
  */
 public class GameBoard extends JPanel{
-    protected String currentPlayer = "white";
     private GamePiece[][] board = new GamePiece[8][10];
-    private int[] clickedTile = new int[2];
-
-    protected ArrayList<int[]> whiteOnlyTiles, redOnlyTiles;
-
     protected Laser laser = new Laser();
 
-    private boolean movingGamePiece = false, movePointASelected = false, movePointBSelected = false;
-    int[] movePointA = new int[]{-1,-1};
-    int[] movePointB = new int[]{-1,-1};
+    public static final int tileSize = 50, borderSize = 1;
+
+    protected String currentPlayer = "white";
+    protected ArrayList<int[]> whiteOnlyTiles, redOnlyTiles;
 
     /**
      * Basic constructor for the GameBoard class initializes the board to the classic setup
@@ -60,25 +56,27 @@ public class GameBoard extends JPanel{
      */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        int topBorder = (this.getHeight()-408)/2;
-        int leftBorder = (this.getWidth()-510)/2;
+        int topBorder = (this.getHeight()-((tileSize+borderSize)*8))/2;
+        int leftBorder = (this.getWidth()-((tileSize+borderSize)*10))/2;
         for(int[] p : whiteOnlyTiles){
             g.setColor(new Color(180,180,180));
-            g.fillRect(leftBorder+(p[1]*51), topBorder+(p[0]*51),50,50);
+            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
         for(int[] p : redOnlyTiles){
             g.setColor(new Color(255,85,80));
-            g.fillRect(leftBorder+(p[1]*51), topBorder+(p[0]*51),50,50);
+            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
         for(int row=0; row < 8; row++){
             for(int col=0; col < 10; col++){
-                g.setColor(Color.black);
-                g.drawRect(leftBorder-1+(col*51), topBorder-1+(row*51), 51, 51);
-                board[row][col].setXYpos(leftBorder+(col*51),topBorder+(row*51));
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(borderSize));
+                g2.setColor(Color.black);
+                g2.drawRect(leftBorder-borderSize+(col*(tileSize+borderSize)), topBorder-borderSize+(row*(tileSize+borderSize)), (tileSize+borderSize), (tileSize+borderSize));
+                board[row][col].setXYpos(leftBorder+(col*(tileSize+borderSize)),topBorder+(row*(tileSize+borderSize)));
                 if(!(board[row][col] instanceof NullPiece)){
                     Image gpImage = Toolkit.getDefaultToolkit().getImage(board[row][col].getImage());
-                    g.drawImage(gpImage, leftBorder+(col*51), topBorder+(row*51), this);
+                    g.drawImage(gpImage, leftBorder+(col*(tileSize+borderSize)), topBorder+(row*(tileSize+borderSize)),tileSize,tileSize, this);
                     if(board[row][col] instanceof Obelisk){
                         Obelisk ob = (Obelisk) board[row][col];
                         if(ob.stacked){
@@ -290,7 +288,7 @@ public class GameBoard extends JPanel{
         board[3][2] = new Djed("red",0);
         board[2][6] = new Djed("red",90);
         board[1][5] = new Pharaoh("red",0);
-        
+
         board[5][9] = new Pyramid("white",180);
         board[4][9] = new Pyramid("white",270);
         board[3][6] = new Pyramid("white",90);
@@ -327,9 +325,9 @@ public class GameBoard extends JPanel{
             int[] set = tiles.get(i);
             Point pt = board[set[0]][set[1]].getCenterPoint();
             if(set[0] == 0 && set[1] == 0){
-                pt = new Point((int)pt.getX(),(int)pt.getY()-24);
+                pt = new Point((int)pt.getX(),(int)pt.getY()-((tileSize/2)-borderSize));
             }else if(set[0] == 7 && set[1] == 9){
-                pt = new Point((int)pt.getX(),(int)pt.getY()+24);
+                pt = new Point((int)pt.getX(),(int)pt.getY()+((tileSize/2)-borderSize));
             }
             pointsPx.add(pt);
         }
@@ -338,16 +336,16 @@ public class GameBoard extends JPanel{
             int lastDir = laser.lastDirection;
             Point pt = board[set[0]][set[1]].getCenterPoint();
             if(lastDir == 0){
-                pt = new Point((int)pt.getX(),(int)pt.getY()-50);
+                pt = new Point((int)pt.getX(),(int)pt.getY()-tileSize);
             }
             if(lastDir == 90){
-                pt = new Point((int)pt.getX()+50,(int)pt.getY());
+                pt = new Point((int)pt.getX()+tileSize,(int)pt.getY());
             }
             if(lastDir == 180){
-                pt = new Point((int)pt.getX(),(int)pt.getY()+50);
+                pt = new Point((int)pt.getX(),(int)pt.getY()+tileSize);
             }
             if(lastDir == 270){
-                pt = new Point((int)pt.getX()-50,(int)pt.getY());
+                pt = new Point((int)pt.getX()-tileSize,(int)pt.getY());
             }
             pointsPx.add(pt);
         }
@@ -371,33 +369,5 @@ public class GameBoard extends JPanel{
             }
         }else
             board[row][col] = new NullPiece();
-    }
-
-    /**
-     * shows the valid moves for a given tile coordinates
-     * 
-     */
-    public ArrayList<Point> findValidMoves(int row, int col){
-        ArrayList<Point> validMoves = new ArrayList<Point>();
-        if(row-1 >= 0 && col-1 >= 0)
-            validMoves.add( board[row-1][col-1].getDrawPoint() );//topLeft
-        if(col-1 >= 0)
-            validMoves.add( board[row][col-1].getDrawPoint() );//top
-        if(row+1 < 8 && col-1 >= 0)
-            validMoves.add( board[row+1][col-1].getDrawPoint() );//topRight
-
-        if(row-1 >= 0)
-            validMoves.add( board[row-1][col].getDrawPoint() );//left 
-        if(row+1 < 8)
-            validMoves.add( board[row+1][col].getDrawPoint() );//right
-
-        if(row-1 >= 0 && col+1 < 10)
-            validMoves.add( board[row-1][col+1].getDrawPoint() );//botLeft
-        if(col+1 < 10)
-            validMoves.add( board[row][col+1].getDrawPoint() );//bot
-        if(row+1 < 8 && col+1 < 10)
-            validMoves.add( board[row+1][col+1].getDrawPoint() );//botRight
-
-        return validMoves;
     }
 }
