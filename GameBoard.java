@@ -219,8 +219,8 @@ public class GameBoard extends JPanel{
         board[3][7] = new Pyramid("red",90);
         board[4][7] = new Pyramid("red",0);
         board[5][6] = new Pyramid("red",90);
-        board[0][4] = new Obelisk("red",0);
-        board[0][6] = new Obelisk("red",0);
+        board[0][4] = new Obelisk("red",0,true);
+        board[0][6] = new Obelisk("red",0,true);
         board[3][4] = new Djed("red",0);
         board[3][5] = new Djed("red",90);
         board[0][5] = new Pharaoh("red",0);
@@ -232,8 +232,8 @@ public class GameBoard extends JPanel{
         board[4][2] = new Pyramid("white",270);
         board[3][2] = new Pyramid("white",180);
         board[2][3] = new Pyramid("white",270);
-        board[7][5] = new Obelisk("white",0);
-        board[7][3] = new Obelisk("white",0);
+        board[7][5] = new Obelisk("white",0,true);
+        board[7][3] = new Obelisk("white",0,true);
         board[4][4] = new Djed("white",90);
         board[4][5] = new Djed("white",0);
         board[7][4] = new Pharaoh("white",0);
@@ -251,8 +251,8 @@ public class GameBoard extends JPanel{
         board[3][8] = new Pyramid("red",90);
         board[4][8] = new Pyramid("red",0);
         board[4][5] = new Pyramid("red",270);
-        board[0][4] = new Obelisk("red",0);
-        board[0][6] = new Obelisk("red",0);
+        board[0][4] = new Obelisk("red",0,true);
+        board[0][6] = new Obelisk("red",0,true);
         board[3][5] = new Djed("red",90);
         board[0][7] = new Djed("red",90);
         board[0][5] = new Pharaoh("red",0);
@@ -264,8 +264,8 @@ public class GameBoard extends JPanel{
         board[4][1] = new Pyramid("white",270);
         board[3][1] = new Pyramid("white",180);
         board[3][4] = new Pyramid("white",90);
-        board[7][5] = new Obelisk("white",0);
-        board[7][3] = new Obelisk("white",0);
+        board[7][5] = new Obelisk("white",0,true);
+        board[7][3] = new Obelisk("white",0,true);
         board[4][4] = new Djed("white",90);
         board[7][2] = new Djed("white",90);
         board[7][4] = new Pharaoh("white",0);
@@ -283,8 +283,8 @@ public class GameBoard extends JPanel{
         board[4][3] = new Pyramid("red",270);
         board[0][6] = new Pyramid("red",90);
         board[4][5] = new Pyramid("red",90);
-        board[0][5] = new Obelisk("red",0);
-        board[2][5] = new Obelisk("red",0);
+        board[0][5] = new Obelisk("red",0,true);
+        board[2][5] = new Obelisk("red",0,true);
         board[3][2] = new Djed("red",0);
         board[2][6] = new Djed("red",90);
         board[1][5] = new Pharaoh("red",0);
@@ -296,10 +296,10 @@ public class GameBoard extends JPanel{
         board[7][5] = new Pyramid("white",0);
         board[7][3] = new Pyramid("white",180);
         board[3][4] = new Pyramid("white",270);
+        board[7][4] = new Obelisk("white",0,true);
+        board[5][4] = new Obelisk("white",0,true);
         board[4][7] = new Djed("white",0);
         board[5][3] = new Djed("white",90);
-        board[7][4] = new Obelisk("white",0);
-        board[5][4] = new Obelisk("white",0);
         board[6][4] = new Pharaoh("white",0);
     }
 

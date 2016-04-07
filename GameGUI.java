@@ -39,9 +39,9 @@ implements MouseListener, ActionListener{
 
         int appletWidth = (((GameBoard.tileSize+GameBoard.borderSize)*10)+GameBoard.tileSize*2);
         int appletHeight = (((GameBoard.tileSize+GameBoard.borderSize)*8)+GameBoard.tileSize*2);
-        
+
         this.setSize(new Dimension(appletWidth,appletHeight));
-        
+
         board.setBorder(BorderFactory.createTitledBorder("Game Board"));
 
         lastPointLBL = new JLabel("");
@@ -133,14 +133,10 @@ implements MouseListener, ActionListener{
             } else {
                 turnEnded = false;
                 checkWinConditions();
-                if(board.laser.effect.equals("hit piece")){
-                }
                 swapPlayers();
-                currentPlayerLBL.setText("Currnet Player: "+board.currentPlayer);
-                textPanel.repaint();
-                board.laser.showLaser = false;
                 continueButton.setEnabled(false);
                 endTurnButton.setEnabled(true);
+                board.laser.showLaser = false;
                 repaint();
             }
         }
@@ -224,6 +220,14 @@ implements MouseListener, ActionListener{
             }else{
                 Obelisk ob = (Obelisk) gpA;
                 boolean unstack = false;
+                if(ob.stacked){
+                    String[] jOptionButtons = { "unstack", "move" };
+                    int playerStartChoice = JOptionPane.showOptionDialog(null, "Do you want to move or unstack?", "move or unstack", 
+                            JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons, jOptionButtons[1]);
+                    if(playerStartChoice == 0)
+                        unstack = true;
+                }
+
                 //check if they want to unstack or move the stack store in unstack
                 if(ob.stacked && unstack){
                     board.unstackObelisk(tileA,tileB);
@@ -354,8 +358,9 @@ implements MouseListener, ActionListener{
     {
         // simple text displayed on applet
         clearWindow(g);
-        textPanel.repaint();
         board.repaint();
+        textPanel.repaint();
+        buttonPanel.repaint();
     }
 
     /**
@@ -366,7 +371,6 @@ implements MouseListener, ActionListener{
     public void clearWindow(Graphics g){
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, (int) this.getWidth(), (int) this.getHeight());
-        buttonPanel.repaint();
     }
 
     /**
