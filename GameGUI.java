@@ -288,7 +288,7 @@ implements MouseListener, ActionListener{
         if(!(tileA instanceof Djed) && !(tileB instanceof NullPiece)){
             informUserPopup("only djed can swap","Error");
             return false;
-        }else if((tileA instanceof Djed) && (!(tileB instanceof Pharaoh) || !(tileB instanceof Djed))){
+        }else if((tileA instanceof Djed) && (tileB instanceof Pharaoh || tileB instanceof Djed)){
             informUserPopup("djed cant swap with pharaoh's or other djed's","Error");
             return false;
         }
