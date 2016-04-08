@@ -19,6 +19,7 @@ implements MouseListener, ActionListener{
     JLabel lastPointLBL, infoLBL, currentPlayerLBL, moveUnitLBL;
 
     private boolean redMove = false, whiteMove = true, turnEnded = false, gameOver = false;
+    private boolean customSetup = false, redSetup = false, whiteSetup = false;
 
     private int xClickA, yClickA, xClickB, yClickB;
 
@@ -109,7 +110,12 @@ implements MouseListener, ActionListener{
         }else if(playerStartChoice == 2){
             board.setBoardDynasty();
         }else if(playerStartChoice == 3){
+            customSetup = true;
+            continueButton.setEnabled(true);
+            endTurnButton.setEnabled(false);
             board.setBoardCustom();
+            repaint();
+            informUserPopup("Move pieces to starting positions","Move pieces");
         }
     }
 
@@ -120,7 +126,14 @@ implements MouseListener, ActionListener{
      */
     public void actionPerformed(ActionEvent e){
         String command = e.getActionCommand();
-        if(!gameOver){
+        if(customSetup){
+            if("Continue".equals(command)){
+                customSetup = false;
+                continueButton.setEnabled(false);
+                endTurnButton.setEnabled(true);
+                informUserPopup("The Game has now started","Game Start");
+            }
+        }else if(!gameOver){
             if("EndTurn".equals(command)){
                 continueButton.setEnabled(true);
                 endTurnButton.setEnabled(false);
@@ -171,8 +184,17 @@ implements MouseListener, ActionListener{
         int[] tileB = getTile(xClickB,yClickB);
         //lastPointLBL.setText("["+tileA[0]+","+tileA[1]+"] ["+tileB[0]+","+tileB[1]+"]");
         //lastPointLBL.setText("["+xClickA+","+yClickA+"] ["+xClickB+","+yClickB+"]");
-
-        if(!gameOver){
+        if(customSetup){
+            if((tileA[0] == tileB[0] && tileA[1] == tileB[1])){
+                if (e.getButton() == MouseEvent.BUTTON1)
+                    rotateGamePiece(tileA,true);
+                else
+                    rotateGamePiece(tileA,false);
+            }else if(checkGoodTile(tileA,tileB)){
+                board.movePiece(tileA,tileB);
+                repaint();
+            }
+        }else if(!gameOver){
             if(!turnEnded){
                 if( tileA[0] == tileB[0] && tileA[1] == tileB[1]){//rotate
                     if (e.getButton() == MouseEvent.BUTTON1)
@@ -261,10 +283,35 @@ implements MouseListener, ActionListener{
      * @return true if the move is a valid move false if it is not
      */
     public boolean checkValidMove(int[] a, int[] b){
-        GamePiece tileA = board.getPiece(a[0],a[1]);
-        GamePiece tileB = board.getPiece(b[0],b[1]);
+        GamePiece gpA = board.getPiece(a[0],a[1]);
+        GamePiece gpB = board.getPiece(b[0],b[1]);
 
-        if(tileA.team.equals("white")){
+        if(!checkGoodTile(a,b))
+            return false;
+
+        if(!(gpA instanceof Djed) && !(gpB instanceof NullPiece)){
+            informUserPopup("only djed can swap","Error");
+            return false;
+        }else if((gpA instanceof Djed) && (gpB instanceof Pharaoh || gpB instanceof Djed)){
+            informUserPopup("djed cant swap with pharaoh's or other djed's","Error");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 
+     * method to check if a tile is able to be moved into. i.e. the tile to be moved to is not exclusively a red or white tile
+     * @param a an int array of size 2 that holds the position of the piece to be moved
+     * @param b an int array of size 2 that holds the position of the tile the peice is to be moved to
+     * @return true if the tile is able to be moved to false if there is a problem with the tile
+     * 
+     */
+    public boolean checkGoodTile(int[] a, int[] b){
+        GamePiece gpA = board.getPiece(a[0],a[1]);
+        GamePiece gpB = board.getPiece(b[0],b[1]);
+        if(gpA.team.equals("white")){
             for(int[] pt : board.redOnlyTiles){
                 if( (b[0] == pt[0]) && (b[1] == pt[1]) ){
                     informUserPopup("white cannot move here","Error");
@@ -279,21 +326,13 @@ implements MouseListener, ActionListener{
                 }
             }
         }
-
-        if(!(tileA instanceof Djed) && !(tileB instanceof NullPiece)){
-            informUserPopup("only djed can swap","Error");
-            return false;
-        }else if((tileA instanceof Djed) && (tileB instanceof Pharaoh || tileB instanceof Djed)){
-            informUserPopup("djed cant swap with pharaoh's or other djed's","Error");
-            return false;
-        }
-
         return true;
     }
 
     /**
      * method that checks to see who owns a given GamePiece
      * 
+     * @piece the GamePiece to be checked
      * @return true if current player owns the piece, false if they do not
      */
     public boolean checkOwnership(GamePiece piece){

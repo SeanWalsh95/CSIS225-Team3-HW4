@@ -210,6 +210,7 @@ public class GameBoard extends JPanel{
         GamePiece gpB = board[tileB[0]][tileB[1]];
         board[tileA[0]][tileA[1]] = gpB;
         board[tileB[0]][tileB[1]] = gpA;
+        repaint();
     }
 
     /**
@@ -429,7 +430,30 @@ public class GameBoard extends JPanel{
      */
     public void setBoardCustom(){
         clearBoard();
-        board[7][0] = new Pharaoh("red",0);
+        board[0][0] = new Pharaoh("red",0);
+        board[1][0] = new Djed("red",0);
+        board[2][0] = new Djed("red",0);
+        board[3][0] = new Obelisk("red",0,true);
+        board[4][0] = new Obelisk("red",0,true);
+        board[5][0] = new Pyramid("red",0);
+        board[6][0] = new Pyramid("red",0);
+        board[7][0] = new Pyramid("red",0);
+        board[2][1] = new Pyramid("red",0);
+        board[3][1] = new Pyramid("red",0);
+        board[4][1] = new Pyramid("red",0);
+        board[5][1] = new Pyramid("red",0);
+
         board[0][9] = new Pharaoh("white",0);
+        board[1][9] = new Djed("white",0);
+        board[2][9] = new Djed("white",0);
+        board[3][9] = new Obelisk("white",0,true);
+        board[4][9] = new Obelisk("white",0,true);
+        board[5][9] = new Pyramid("white",0);
+        board[6][9] = new Pyramid("white",0);
+        board[7][9] = new Pyramid("white",0);
+        board[2][8] = new Pyramid("white",0);
+        board[3][8] = new Pyramid("white",0);
+        board[4][8] = new Pyramid("white",0);
+        board[5][8] = new Pyramid("white",0);
     }
 }
