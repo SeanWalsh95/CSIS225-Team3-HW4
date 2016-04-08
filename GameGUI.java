@@ -179,7 +179,7 @@ implements MouseListener, ActionListener{
                         rotateGamePiece(tileA,true);
                     else
                         rotateGamePiece(tileA,false);
-                }else if(checkRangeOfMove(tileA,tileB)){//move
+                }else if(checkOwnership(board.getPiece(tileA[0],tileA[1])) && checkRangeOfMove(tileA,tileB)){//move
                     movingGamePiece(tileA,tileB);
                 }
             }else{
@@ -219,9 +219,11 @@ implements MouseListener, ActionListener{
         GamePiece gpB = board.getPiece(tileB[0],tileB[1]);
         if(gpA instanceof Obelisk || gpB instanceof Obelisk){
             if(gpA instanceof Obelisk && gpB instanceof Obelisk){
-                board.stackObelisk(tileA,tileB);
-                turnEnded = true;
-                repaint();
+                if(!((Obelisk) gpB).stacked){
+                    board.stackObelisk(tileA,tileB);
+                    turnEnded = true;
+                    repaint();
+                }
             }else{
                 Obelisk ob = (Obelisk) gpA;
                 boolean unstack = false;
@@ -262,13 +264,6 @@ implements MouseListener, ActionListener{
         GamePiece tileA = board.getPiece(a[0],a[1]);
         GamePiece tileB = board.getPiece(b[0],b[1]);
 
-        infoLBL.setText("");
-
-        if(!tileA.team.equals(board.currentPlayer)){
-            informUserPopup("not your unit","Error");
-            return false;
-        }
-
         if(tileA.team.equals("white")){
             for(int[] pt : board.redOnlyTiles){
                 if( (b[0] == pt[0]) && (b[1] == pt[1]) ){
@@ -294,6 +289,20 @@ implements MouseListener, ActionListener{
         }
 
         return true;
+    }
+
+    /**
+     * method that checks to see who owns a given GamePiece
+     * 
+     * @return true if current player owns the piece, false if they do not
+     */
+    public boolean checkOwnership(GamePiece piece){
+        if(piece.team.equals(board.currentPlayer)){
+            return true;
+        }else{
+            informUserPopup("not your unit","Error");
+            return false;
+        }
     }
 
     /**

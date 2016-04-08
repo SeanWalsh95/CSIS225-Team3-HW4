@@ -219,7 +219,11 @@ public class GameBoard extends JPanel{
      * @param tileB location of the stack
      */
     public void stackObelisk(int[] tileA, int[] tileB){
-        board[tileA[0]][tileA[1]] = new NullPiece();
+        Obelisk ob = (Obelisk) board[tileA[0]][tileA[1]];
+        if(ob.stacked)
+            ((Obelisk)board[tileA[0]][tileA[1]]).stacked = false;
+        else
+            board[tileA[0]][tileA[1]] = new NullPiece();
         ((Obelisk)board[tileB[0]][tileB[1]]).stacked = true;
     }
 
