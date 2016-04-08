@@ -45,6 +45,18 @@ class Obelisk extends GamePiece{
     }
     
     /**
+     * Method to get the directory path of an image that represents the GamePeice
+     * 
+     * @return a string that represents the path of the image relative to the working directory
+     */
+    public String getImage(){
+        if(stacked)
+            return image+team+name+direction+"Stacked.png";
+        else
+            return image+team+name+direction+".png";
+    }
+    
+    /**
      * Method to find how the GamePeice affects the laser
      * 
      * @param laserDirection the direction the laser is moving prior to entering the GamePeice

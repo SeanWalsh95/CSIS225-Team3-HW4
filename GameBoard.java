@@ -12,7 +12,11 @@ public class GameBoard extends JPanel{
     private GamePiece[][] board = new GamePiece[8][10];
     protected Laser laser = new Laser();
 
+    private int laserSegmentsDrawn = 0;
+
     public static final int tileSize = 50, borderSize = 1;
+
+    private int topBorder, leftBorder;
 
     protected String currentPlayer = "white";
     protected ArrayList<int[]> whiteOnlyTiles, redOnlyTiles;
@@ -56,39 +60,44 @@ public class GameBoard extends JPanel{
      */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        int topBorder = (this.getHeight()-((tileSize+borderSize)*8))/2;
-        int leftBorder = (this.getWidth()-((tileSize+borderSize)*10))/2;
+        topBorder = (this.getHeight()-((tileSize+borderSize)*8))/2;
+        leftBorder = (this.getWidth()-((tileSize+borderSize)*10))/2;
+
+        //draw white only tiles
         for(int[] p : whiteOnlyTiles){
             g.setColor(new Color(180,180,180));
             g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
+
+        //draw red only tules
         for(int[] p : redOnlyTiles){
             g.setColor(new Color(255,85,80));
             g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
-        for(int row=0; row < 8; row++){
+        //draw grid
+        for(int row=0; row < 8; row++)
             for(int col=0; col < 10; col++){
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(borderSize));
-                g2.setColor(Color.black);
-                g2.drawRect(leftBorder-borderSize+(col*(tileSize+borderSize)), topBorder-borderSize+(row*(tileSize+borderSize)), (tileSize+borderSize), (tileSize+borderSize));
+                g2.setColor(Color.BLACK);
+                g2.drawRect(leftBorder-borderSize+(col*(tileSize+borderSize)),
+                    topBorder-borderSize+(row*(tileSize+borderSize)),
+                    tileSize+borderSize,
+                    tileSize+borderSize);
+            }
+
+        //draw pieces
+        for(int row=0; row < 8; row++)
+            for(int col=0; col < 10; col++){
                 board[row][col].setXYpos(leftBorder+(col*(tileSize+borderSize)),topBorder+(row*(tileSize+borderSize)));
                 if(!(board[row][col] instanceof NullPiece)){
                     Image gpImage = Toolkit.getDefaultToolkit().getImage(board[row][col].getImage());
                     g.drawImage(gpImage, leftBorder+(col*(tileSize+borderSize)), topBorder+(row*(tileSize+borderSize)),tileSize,tileSize, this);
-                    if(board[row][col] instanceof Obelisk){
-                        Obelisk ob = (Obelisk) board[row][col];
-                        if(ob.stacked){
-                            g.setColor(Color.BLUE); 
-                            Point p = board[row][col].getCenterPoint();
-                            g.fillOval((int)p.getX()-5,(int)p.getY()-5,10,10);
-                        }
-                    }
                 }
             }
-        }
 
+        //draw laser
         if(laser.showLaser){
             ArrayList<Point> points = getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
             for(int i=0; i < points.size()-1; i++){
@@ -102,6 +111,36 @@ public class GameBoard extends JPanel{
                     (int)points.get(i+1).getY()
                 );
             }
+        }
+    }
+
+    public void animateLaser(Graphics g){
+        ArrayList<Point> points = getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
+        ArrayList<Point> animatedSegment = animatedLaserSegment(points.get(laserSegmentsDrawn), points.get(laserSegmentsDrawn+1));
+        for(int j=0; j < animatedSegment.size()-1; j++){
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.BLUE);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawLine(
+                (int)animatedSegment.get(j).getX(),
+                (int)animatedSegment.get(j).getY(),
+                (int)animatedSegment.get(j+1).getX(),
+                (int)animatedSegment.get(j+1).getY()
+            );
+            //pause drawing here
+        }
+        if(laserSegmentsDrawn < points.size()-1)
+            laserSegmentsDrawn++;
+        for(int i=0; i < laserSegmentsDrawn-1; i++){
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.BLUE);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawLine(
+                (int)points.get(i).getX(),
+                (int)points.get(i).getY(),
+                (int)points.get(i+1).getX(),
+                (int)points.get(i+1).getY()
+            );
         }
     }
 
@@ -194,6 +233,84 @@ public class GameBoard extends JPanel{
         GamePiece gpA = board[tileA[0]][tileA[1]];
         board[tileB[0]][tileB[1]] = new Obelisk(gpA.team,gpA.direction);
         ((Obelisk)board[tileA[0]][tileA[1]]).stacked = false;
+    }
+
+    public ArrayList<Point> animatedLaserSegment(Point a, Point b){
+        ArrayList<Point> segment = new ArrayList<Point>();
+        if(a.getX() != b.getX()){
+            if(a.getX() - b.getX() > 0)
+                for(int i=(int)a.getX(); i >= b.getX(); i--)
+                    segment.add(new Point(i,(int)a.getY()));
+            else
+                for(int i=(int)b.getX(); i >= a.getX(); i--)
+                    segment.add(new Point(i,(int)a.getY()));
+        }else{
+            if(a.getY() - b.getY()  > 0)
+                for(int i=(int)a.getY(); i >= b.getY(); i--)
+                    segment.add(new Point((int)a.getX(),i));
+            else
+                for(int i=(int)b.getY(); i >= a.getY(); i--)
+                    segment.add(new Point((int)a.getX(),i));
+        }
+        return segment;
+    }
+
+    /**
+     * Generates the ArrayList of points the laser will be drawn in
+     * 
+     * @param tiles contains all the tiles on the board
+     * @return the coordinates the laser will be drawn on
+     */
+    public ArrayList<Point> getPxPointFromTileList(ArrayList<int[]> tiles){
+        ArrayList<Point> pointsPx = new ArrayList<Point>();
+        for(int i=0; i < tiles.size(); i++){
+            int[] set = tiles.get(i);
+            Point pt = board[set[0]][set[1]].getCenterPoint();
+            if(set[0] == 0 && set[1] == 0){
+                pt = new Point((int)pt.getX(),(int)pt.getY()-((tileSize/2)-borderSize));
+            }else if(set[0] == 7 && set[1] == 9){
+                pt = new Point((int)pt.getX(),(int)pt.getY()+((tileSize/2)-borderSize));
+            }
+            pointsPx.add(pt);
+        }
+        if(laser.effect.equals("missed")){
+            int[] set = tiles.get(tiles.size()-1);
+            int lastDir = laser.lastDirection;
+            Point pt = board[set[0]][set[1]].getCenterPoint();
+            if(lastDir == 0){
+                pt = new Point((int)pt.getX(),(int)pt.getY()-tileSize);
+            }
+            if(lastDir == 90){
+                pt = new Point((int)pt.getX()+tileSize,(int)pt.getY());
+            }
+            if(lastDir == 180){
+                pt = new Point((int)pt.getX(),(int)pt.getY()+tileSize);
+            }
+            if(lastDir == 270){
+                pt = new Point((int)pt.getX()-tileSize,(int)pt.getY());
+            }
+            pointsPx.add(pt);
+        }
+        return pointsPx;
+    }
+
+    /**
+     * Removes a piece from the game board at the given coordinates
+     * 
+     * @param row The row component of the coordinates
+     * @param col The column component of the coordinates
+     */
+    public void removePiece(int row, int col){
+        GamePiece gp = board[row][col];
+        if(gp instanceof Obelisk){
+            Obelisk ob = (Obelisk) gp;
+            if(ob.stacked){
+                ob.stacked = false;
+            }else{
+                board[row][col] = new NullPiece();
+            }
+        }else
+            board[row][col] = new NullPiece();
     }
 
     /**
@@ -310,64 +427,5 @@ public class GameBoard extends JPanel{
         clearBoard();
         board[7][0] = new Pharaoh("red",0);
         board[0][9] = new Pharaoh("white",0);
-    }
-
-    /**
-     * Generates the ArrayList of points the laser will be drawn in
-     * 
-     * @param tiles contains all the tiles on the board
-     * 
-     * @return the coordinates the laser will be drawn on
-     */
-    public ArrayList<Point> getPxPointFromTileList(ArrayList<int[]> tiles){
-        ArrayList<Point> pointsPx = new ArrayList<Point>();
-        for(int i=0; i < tiles.size(); i++){
-            int[] set = tiles.get(i);
-            Point pt = board[set[0]][set[1]].getCenterPoint();
-            if(set[0] == 0 && set[1] == 0){
-                pt = new Point((int)pt.getX(),(int)pt.getY()-((tileSize/2)-borderSize));
-            }else if(set[0] == 7 && set[1] == 9){
-                pt = new Point((int)pt.getX(),(int)pt.getY()+((tileSize/2)-borderSize));
-            }
-            pointsPx.add(pt);
-        }
-        if(laser.effect.equals("missed")){
-            int[] set = tiles.get(tiles.size()-1);
-            int lastDir = laser.lastDirection;
-            Point pt = board[set[0]][set[1]].getCenterPoint();
-            if(lastDir == 0){
-                pt = new Point((int)pt.getX(),(int)pt.getY()-tileSize);
-            }
-            if(lastDir == 90){
-                pt = new Point((int)pt.getX()+tileSize,(int)pt.getY());
-            }
-            if(lastDir == 180){
-                pt = new Point((int)pt.getX(),(int)pt.getY()+tileSize);
-            }
-            if(lastDir == 270){
-                pt = new Point((int)pt.getX()-tileSize,(int)pt.getY());
-            }
-            pointsPx.add(pt);
-        }
-        return pointsPx;
-    }
-
-    /**
-     * Removes a piece from the game board at the given coordinates
-     * 
-     * @param row The row component of the coordinates
-     * @param col The column component of the coordinates
-     */
-    public void removePiece(int row, int col){
-        GamePiece gp = board[row][col];
-        if(gp instanceof Obelisk){
-            Obelisk ob = (Obelisk) gp;
-            if(ob.stacked){
-                ob.stacked = false;
-            }else{
-                board[row][col] = new NullPiece();
-            }
-        }else
-            board[row][col] = new NullPiece();
     }
 }

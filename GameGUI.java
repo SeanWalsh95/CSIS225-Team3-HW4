@@ -120,17 +120,15 @@ implements MouseListener, ActionListener{
      */
     public void actionPerformed(ActionEvent e){
         String command = e.getActionCommand();
-        if("EndTurn".equals(command)){
-            continueButton.setEnabled(true);
-            endTurnButton.setEnabled(false);
-            board.laser.showLaser = true;
-            repaint();
-            //checkWinConditions();
-        }
-        if("Continue".equals(command)){
-            if(gameOver){
-
-            } else {
+        if(!gameOver){
+            if("EndTurn".equals(command)){
+                continueButton.setEnabled(true);
+                endTurnButton.setEnabled(false);
+                board.laser.showLaser = true;
+                repaint();
+                //checkWinConditions();
+            }
+            if("Continue".equals(command)){
                 turnEnded = false;
                 checkWinConditions();
                 swapPlayers();
@@ -139,11 +137,13 @@ implements MouseListener, ActionListener{
                 board.laser.showLaser = false;
                 repaint();
             }
-        }
-        if("Instructions".equals(command)){
-            informUserPopup("Left Click = Rotate CounterClockwise\n"+
-                "Right Click = Rotate Clockwise\n"+
-                "Click Drag = move unit","Instructions");
+            if("Instructions".equals(command)){
+                informUserPopup("Left Click = Rotate CounterClockwise\n"+
+                    "Right Click = Rotate Clockwise\n"+
+                    "Click Drag = move unit","Instructions");
+            }
+        }else{
+            informUserPopup("the game is over thanks for playing", "Game Over");
         }
     }
 
@@ -171,17 +171,22 @@ implements MouseListener, ActionListener{
         int[] tileB = getTile(xClickB,yClickB);
         //lastPointLBL.setText("["+tileA[0]+","+tileA[1]+"] ["+tileB[0]+","+tileB[1]+"]");
         //lastPointLBL.setText("["+xClickA+","+yClickA+"] ["+xClickB+","+yClickB+"]");
-        if(!turnEnded){
-            if( tileA[0] == tileB[0] && tileA[1] == tileB[1]){//rotate
-                if (e.getButton() == MouseEvent.BUTTON1)
-                    rotateGamePiece(tileA,true);
-                else
-                    rotateGamePiece(tileA,false);
-            }else if(checkRangeOfMove(tileA,tileB)){//move
-                movingGamePiece(tileA,tileB);
+
+        if(!gameOver){
+            if(!turnEnded){
+                if( tileA[0] == tileB[0] && tileA[1] == tileB[1]){//rotate
+                    if (e.getButton() == MouseEvent.BUTTON1)
+                        rotateGamePiece(tileA,true);
+                    else
+                        rotateGamePiece(tileA,false);
+                }else if(checkRangeOfMove(tileA,tileB)){//move
+                    movingGamePiece(tileA,tileB);
+                }
+            }else{
+                informUserPopup("you have no more moves left this turn \n end your turn","Error");
             }
         }else{
-            informUserPopup("you have no more moves left this turn \n end your turn","Error");
+            informUserPopup("the game is over thanks for playing", "Game Over");
         }
     }
 
@@ -283,7 +288,10 @@ implements MouseListener, ActionListener{
         if(!(tileA instanceof Djed) && !(tileB instanceof NullPiece)){
             informUserPopup("only djed can swap","Error");
             return false;
-        } 
+        }else if((tileA instanceof Djed) && (!(tileB instanceof Pharaoh) || !(tileB instanceof Djed))){
+            informUserPopup("djed cant swap with pharaoh's or other djed's","Error");
+            return false;
+        }
 
         return true;
     }
@@ -496,11 +504,13 @@ implements MouseListener, ActionListener{
             informUserPopup(board.laser.laserDetails,"Piece Destroyed");
             GamePiece gp = board.getPiece(board.laser.lastHit[0],board.laser.lastHit[1]);
             if(gp.name.equals("Pharaoh")){
+                String winner;
                 if(gp.team.equals("white")){
-                    informUserPopup("RED WINS", "Winner");
+                    winner = "RED WINS";
                 }else{
-                    informUserPopup("WHITE WINS", "Winner");
+                    winner = "WHITE WINS";
                 }
+                informUserPopup(winner,"GAME OVER");
                 gameOver = true;
             }
             board.removePiece(board.laser.lastHit[0],board.laser.lastHit[1]);
