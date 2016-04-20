@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public abstract class GamePiece
 {
-    String image = "recources\\gamePieces\\";
+    String image = "resources\\gamePieces\\";
     String name, team;
     int direction;  //direction peice is pointing
     
