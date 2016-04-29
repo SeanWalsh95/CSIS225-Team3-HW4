@@ -1195,14 +1195,14 @@ implements MouseListener, ActionListener, MouseMotionListener{
      */
     public void rotateGamePiece(int[] tile, boolean rotateRight){
         GamePiece gp = board.getPiece(tile[0],tile[1]);
-        //if(gp.team.equals(board.currentPlayer)){
+        if(gp.team.equals(board.currentPlayer)){
             if(rotateRight)
                 board.rotatePieceLeft(tile[0],tile[1]);
             else
                 board.rotatePieceRight(tile[0],tile[1]);
             turnEnded = true;
             repaint();
-        //}
+        }
     }
 
     /**
