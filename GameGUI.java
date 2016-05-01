@@ -1092,7 +1092,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 else if(x >= 483 && x <= 483+80 && y >= 818 && y <= 818+30)
                 {
                     //play the button sound
-                    playButtonSound();
+                    playPageTurnButtonSound();
                     //set StartMenuMainScreen to false
                     //set StartMenuRulesScreen to true
                     RulesScreenPage1 = false;
@@ -1125,7 +1125,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 else if(x >= 5 && x <= 5+80 && y >= 819 && y <= 819+30)
                 {
                     //play the button sound
-                    playButtonSound();
+                    playPageTurnButtonSound();
                     //set StartMenuMainScreen to false
                     //set StartMenuRulesScreen to true
                     RulesScreenPage2 = false;
@@ -1137,7 +1137,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 else if(x >= 483 && x <= 483+80 && y >= 818 && y <= 818+30)
                 {
                     //play the button sound
-                    playButtonSound();
+                    playPageTurnButtonSound();
                     //set  RulesScreenPage2 to false
                     //set RulesScreenPage3 to true
                     RulesScreenPage2 = false;
@@ -1170,7 +1170,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 else if(x >= 5 && x <= 5+80 && y >= 819 && y <= 819+30)
                 {
                     //play the button sound
-                    playButtonSound();
+                    playPageTurnButtonSound();
                     //set StartMenuMainScreen to false
                     //set StartMenuRulesScreen to true
                     RulesScreenPage3 = false;
@@ -2007,6 +2007,16 @@ implements MouseListener, ActionListener, MouseMotionListener{
     public void playStartGameButtonSound() {
         //set the random number to play random button sound
         String buttonSound = "resources/sounds/buttons/soundgong.au";
+        //plays random button sound from button names
+        play( getDocumentBase(), buttonSound );
+    }
+    
+    /**
+     * Plays the pageTurning button sound
+     */
+    public void playPageTurnButtonSound() {
+        //set the random number to play random button sound
+        String buttonSound = "resources/sounds/buttons/PageTurn.wav";
         //plays random button sound from button names
         play( getDocumentBase(), buttonSound );
     }
