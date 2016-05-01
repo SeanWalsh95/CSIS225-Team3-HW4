@@ -26,7 +26,6 @@ implements MouseListener, ActionListener, MouseMotionListener{
     JButton endTurnButton, continueButton, instructionsButton; 
     JLabel lastPointLBL, infoLBL, currentPlayerLBL, moveUnitLBL;
 
-    
     private boolean redMove = false, whiteMove = true, turnEnded = false, gameOver = false;
     private boolean customSetup = false, redSetup = false, whiteSetup = false;
 
@@ -870,6 +869,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     }
 
+    /**
+     * public void mouseClicked creates an event when a mouse is clicked
+     * @param MouseEvent e is the event that the mouse creates
+     */
     public void mouseClicked( MouseEvent e ) 
     {
         Graphics g = getGraphics();
@@ -1786,6 +1789,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
     //      Seting up the game screens
     //===============================================
 
+    /**
+     * Draws the main menu to the applet
+     */
     public void setUpMainMenuScreen()
     {
         Graphics g = getGraphics();
@@ -1811,6 +1817,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Draws the select a game menu to the applet
+     */
     public void setUpSelectAGameScreen()
     {
         Graphics g = getGraphics();
@@ -1833,6 +1842,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     }
 
+    /**
+     * Draws the quit game screen to the applet
+     */
     public void setUpQuitScreen()
     {
         Graphics g = getGraphics();
@@ -1855,6 +1867,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     }
 
+    /**
+     * Initilizes the game once all
+     * options are selected and the
+     * player selects the start game
+     * button
+     */
     public void setUpPlayGame()
     {
         int appletWidth = (((GameBoard.tileSize+GameBoard.borderSize)*10)+GameBoard.tileSize*2);
@@ -1904,6 +1922,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         instructionsButton.addActionListener( this );
     }
 
+    /**
+     * Draws the first page
+     * of the rules screen
+     * to the applet
+     */
     public void setUpRulesScreenPage1()
     {
         Graphics g = getGraphics();
@@ -1925,6 +1948,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Draws the second page
+     * of the rules screen
+     * to the applet
+     */
     public void setUpRulesScreenPage2()
     {
         Graphics g = getGraphics();
@@ -1946,6 +1974,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Draws the third page
+     * of the rules screen
+     * to the applet
+     */
     public void setUpRulesScreenPage3()
     {
         Graphics g = getGraphics();
@@ -2010,7 +2043,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
         //plays random button sound from button names
         play( getDocumentBase(), buttonSound );
     }
-    
+
     /**
      * Plays the pageTurning button sound
      */
@@ -2022,7 +2055,8 @@ implements MouseListener, ActionListener, MouseMotionListener{
     }
 
     /**
-     * Generate a random number for the background sounds and sets the sound to play
+     * Generate a random number for the 
+     * background sounds and sets the sound to play
      */
     public void playBackgroundSound() {
         //random call
@@ -2052,6 +2086,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
     //  Paint boards
     //====================
 
+    /**
+     * fetches the Classic board
+     * to be used for painting
+     */
     public void paintClassicBoard(Graphics g)
     {
         try
@@ -2065,6 +2103,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception ex){ex.printStackTrace();}
     }
 
+    /**
+     * fetches the Dynasty board
+     * to be used for painting
+     */
     public void paintDynastyBoard(Graphics g)
     {
         try
@@ -2078,6 +2120,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception ex){ex.printStackTrace();}
     }
 
+    /**
+     * fetches the Imhotep board
+     * to be used for painting
+     */
     public void paintImhotepBoard(Graphics g)
     {
         try
@@ -2091,6 +2137,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception ex){ex.printStackTrace();}
     }
 
+    /**
+     * fetches the empty board
+     * to be used for painting
+     */
     public void paintEmptyBoard(Graphics g)
     {
         try
@@ -2104,6 +2154,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception ex){ex.printStackTrace();}
     }
 
+    /**
+     * fetches the Unselected
+     * Play game button
+     * to be used for painting
+     */
     public void paintUnselectedPlayGameButton(Graphics g)
     {
         try
@@ -2121,6 +2176,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Unselected
+     * Rules Button
+     * to be used for painting
+     */
     public void paintUnselectedRulesButton(Graphics g)
     {
         try
@@ -2138,6 +2198,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Unselected
+     * quit button
+     * to be used for painting
+     */
     public void paintUnselectedQuitButton(Graphics g)
     {
         try
@@ -2155,6 +2220,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * Play game button
+     * to be used for painting
+     */
     public void paintHighlightPlayGameButton(Graphics g)
     {
         try
@@ -2172,6 +2242,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * rules button
+     * to be used for painting
+     */
     public void paintHighlightRulesButton(Graphics g)
     {
         try
@@ -2189,6 +2264,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * quit button
+     * to be used for painting
+     */
     public void paintHighlightQuitButton(Graphics g)
     {
         try
@@ -2206,6 +2286,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * play game button
+     * to be used for painting
+     */
     public void paintPressedPlayGameButton(Graphics g)
     {
         try
@@ -2223,6 +2308,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * rules button
+     * to be used for painting
+     */
     public void paintPressedRulesButton(Graphics g)
     {
         try
@@ -2240,6 +2330,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * quit button
+     * to be used for painting
+     */
     public void paintPressedQuitButton(Graphics g)
     {
         try
@@ -2261,6 +2356,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
     //  SelectAGameMenu pictures
     //==============================
 
+    /**
+     * fetches the unselected
+     * back button
+     * to be used for painting
+     */
     public void paintUnselectedBackButton(Graphics g)
     {
         try
@@ -2278,6 +2378,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the unselected
+     * classic button
+     * to be used for painting
+     */
     public void paintUnselectedClassicButton(Graphics g)
     {
         try
@@ -2295,6 +2400,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the unselected
+     * Dynasty button
+     * to be used for painting
+     */
     public void paintUnselectedDynastyButton(Graphics g)
     {
         try
@@ -2312,6 +2422,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the unselected
+     * Imhotep button
+     * to be used for painting
+     */
     public void paintUnselectedImhotepButton(Graphics g)
     {
         try
@@ -2329,6 +2444,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the unselected
+     * Custom button
+     * to be used for painting
+     */
     public void paintUnselectedCustomButton(Graphics g)
     {
         try
@@ -2346,6 +2466,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the unselected
+     * start game button
+     * to be used for painting
+     */
     public void paintUnselectedStartGameButton(Graphics g)
     {
         try
@@ -2363,6 +2488,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * back button
+     * to be used for painting
+     */
     public void paintHighlightedBackButton(Graphics g)
     {
         try
@@ -2380,6 +2510,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * classic button
+     * to be used for painting
+     */
     public void paintHighlightedClassicButton(Graphics g)
     {
         try
@@ -2397,6 +2532,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * dynasty button
+     * to be used for painting
+     */
     public void paintHighlightedDynastyButton(Graphics g)
     {
         try
@@ -2414,6 +2554,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * Imhotep button
+     * to be used for painting
+     */
     public void paintHighlightedImhotepButton(Graphics g)
     {
         try
@@ -2431,6 +2576,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * custom button
+     * to be used for painting
+     */
     public void paintHighlightedCustomButton(Graphics g)
     {
         try
@@ -2448,6 +2598,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Highlighted
+     * start game button
+     * to be used for painting
+     */
     public void paintHighlightedStartGameButton(Graphics g)
     {
         try
@@ -2465,6 +2620,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * back button
+     * to be used for painting
+     */
     public void paintPressedBackButton(Graphics g)
     {
         try
@@ -2482,6 +2642,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * classic button
+     * to be used for painting
+     */
     public void paintPressedClassicButton(Graphics g)
     {
         try
@@ -2499,6 +2664,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * Dynasty button
+     * to be used for painting
+     */
     public void paintPressedDynastyButton(Graphics g)
     {
         try
@@ -2516,6 +2686,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * Imhotep button
+     * to be used for painting
+     */
     public void paintPressedImhotepButton(Graphics g)
     {
         try
@@ -2533,6 +2708,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * custom button
+     * to be used for painting
+     */
     public void paintPressedCustomButton(Graphics g)
     {
         try
@@ -2550,6 +2730,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * start game button
+     * to be used for painting
+     */
     public void paintPressedStartGameButton(Graphics g)
     {
         try
@@ -2570,7 +2755,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
     //==================================
     //  Buttons for the rules menu
     //==================================
-
+    /**
+     * fetches the Unselected
+     * next button
+     * to be used for painting
+     */
     public void paintUnselectedNextButton(Graphics g)
     {
         try
@@ -2588,6 +2777,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Unselected
+     * previous button
+     * to be used for painting
+     */
     public void paintUnselectedPreviousButton(Graphics g)
     {
         try
@@ -2605,6 +2799,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the highlighted
+     * next button
+     * to be used for painting
+     */
     public void paintHighlightedNextButton(Graphics g)
     {
         try
@@ -2622,6 +2821,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the highlighted
+     * previous button
+     * to be used for painting
+     */
     public void paintHighlightedPreviousButton(Graphics g)
     {
         try
@@ -2639,6 +2843,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * next button
+     * to be used for painting
+     */
     public void paintPressedNextButton(Graphics g)
     {
         try
@@ -2655,6 +2864,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
         catch(Exception a){}
     }
 
+    /**
+     * fetches the Pressed
+     * Previous button
+     * to be used for painting
+     */
     public void paintPressedPreviousButton(Graphics g)
     {
         try
