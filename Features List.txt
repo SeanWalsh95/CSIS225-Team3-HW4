@@ -1,0 +1,16 @@
+Features of Khet:
+
+1.Great soundtracks
+2.Great win game audio
+3.Move pieces by clicking and dragging
+4.Shoot laser by hitting end turn
+5.End turn by hitting end turn
+6.Left and right clicks turn your pieces
+7.Play game button that starts game
+8.Rules button that desplays rules
+9.Quit button that quits game
+10.3 already built game modes to choose from
+11.Custom option to create a custom game mode
+12.Start game button that launches selected game mode
+13.Cool cursor icon
+14.Instruction button that displays instructions
