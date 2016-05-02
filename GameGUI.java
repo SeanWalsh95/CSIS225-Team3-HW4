@@ -1770,6 +1770,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 }else{
                     winner = "WHITE WINS";
                 }
+                endGameSounds();
                 informUserPopup(winner,"GAME OVER");
                 gameOver = true;
             }
@@ -2052,6 +2053,17 @@ implements MouseListener, ActionListener, MouseMotionListener{
         String buttonSound = "resources/sounds/buttons/PageTurn.wav";
         //plays random button sound from button names
         play( getDocumentBase(), buttonSound );
+    }
+    
+    /**
+     * Plays some fun audio when the game ends
+     */
+    public void endGameSounds()
+    {
+        String endGameAudio = "resources/sounds/backgroundSounds/endgame.wav";
+        //plays end game sound from file location
+        AudioClip endAC = getAudioClip(getCodeBase(), endGameAudio);
+        endAC.play();//plays the audio once
     }
 
     /**
