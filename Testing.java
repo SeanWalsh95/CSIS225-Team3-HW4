@@ -62,7 +62,8 @@ public class Testing
         int leftBorder = (700-510)/2; 
         for(int row=0; row < 8; row++){
             for(int col=0; col < 10; col++){
-                board[row][col].setXYpos(leftBorder+(col*51),topBorder+(row*51));
+                board[row][col].
+				setXYpos(leftBorder+(col*51),topBorder+(row*51));
             }
         }
     }
@@ -78,7 +79,8 @@ public class Testing
     }
 
     public void printList(){
-        ArrayList<int[]> tiles = new ArrayList<int[]>(laser.getTraversedTiles(board,currentPlayer));
+        ArrayList<int[]> tiles = 
+		new ArrayList<int[]>(laser.getTraversedTiles(board,currentPlayer));
         System.out.println("enter print list");
         for(int i=0; i< tiles.size();i++){
             int[] set = tiles.get(i);

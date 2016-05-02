@@ -38,19 +38,23 @@ public class Laser extends JComponent
 
     public ArrayList<int[]> getTraversedTiles(GamePiece board[][], String team){
         if(team.equals("white"))
-            return genTraversedTiles(board, whiteStartPos , whiteStartDirection);
+            return genTraversedTiles(board, whiteStartPos ,
+		whiteStartDirection);
         else
             return genTraversedTiles(board, redStartPos , redStartDirection);
     }
 
-    private ArrayList<int[]> genTraversedTiles(GamePiece board[][], int[] stPt, int stDir){
+    private ArrayList<int[]> genTraversedTiles(GamePiece board[][], int[] stPt,
+	int stDir){
         int[] p = new int[]{stPt[0],stPt[1]};
         int laserDirection = stDir, newDirection = stDir;
         ArrayList<int[]> tiles = new ArrayList<int[]>();
 
-        while(!(p[0] > 7 || p[1] > 9 || p[0] < 0 || p[1] < 0) && (laserDirection >= 0)){
+        while(!(p[0] > 7 || p[1] > 9 || p[0] < 0 || p[1] < 0) && 
+		(laserDirection >= 0)){
             if(board[p[0]][p[1]] != null){
-                newDirection = board[p[0]][p[1]].getNewDirection(laserDirection);
+                newDirection = board[p[0]][p[1]].
+				getNewDirection(laserDirection);
             }
             laserDirection = newDirection;
             tiles.add(new int[]{p[0],p[1]});
@@ -71,7 +75,8 @@ public class Laser extends JComponent
             lastHit = new int[]{p[0],p[1]};
         }
         if(newDirection == -5){
-            laserDetails = "Something went wrong with the laser: ERROR returned -5";
+            laserDetails = 
+			"Something went wrong with the laser: ERROR returned -5";
             effect = "error";
         }
         return tiles;

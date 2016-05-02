@@ -22,7 +22,8 @@ public class GameBoard extends JPanel{
     protected ArrayList<int[]> whiteOnlyTiles, redOnlyTiles;
 
     /**
-     * Basic constructor for the GameBoard class initializes the board to the classic setup
+     * Basic constructor for the GameBoard class initializes the board to 
+	 * the classic setup
      */
     public GameBoard(){
         whiteOnlyTiles = new ArrayList<int[]>();
@@ -66,13 +67,15 @@ public class GameBoard extends JPanel{
         //draw white only tiles
         for(int[] p : whiteOnlyTiles){
             g.setColor(new Color(180,180,180));
-            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
+            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)),
+			topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
         //draw red only tules
         for(int[] p : redOnlyTiles){
             g.setColor(new Color(255,85,80));
-            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
+            g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), 
+			topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
         //draw grid
@@ -90,16 +93,23 @@ public class GameBoard extends JPanel{
         //draw pieces
         for(int row=0; row < 8; row++)
             for(int col=0; col < 10; col++){
-                board[row][col].setXYpos(leftBorder+(col*(tileSize+borderSize)),topBorder+(row*(tileSize+borderSize)));
+                board[row][col].setXYpos(leftBorder+(col*(tileSize+borderSize)),
+				topBorder+(row*(tileSize+borderSize)));
                 if(!(board[row][col] instanceof NullPiece)){
-                    Image gpImage = Toolkit.getDefaultToolkit().getImage(board[row][col].getImage());
-                    g.drawImage(gpImage, leftBorder+(col*(tileSize+borderSize)), topBorder+(row*(tileSize+borderSize)),tileSize,tileSize, this);
+                    Image gpImage = 
+					Toolkit.getDefaultToolkit().
+					getImage(board[row][col].getImage());
+                    g.drawImage(gpImage, leftBorder+(col*(tileSize+borderSize)),
+					topBorder+
+					(row*(tileSize+borderSize)),tileSize,tileSize, this);
                 }
             }
 
         //draw laser
         if(laser.showLaser){
-            ArrayList<Point> points = getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
+            ArrayList<Point> points = 
+			getPxPointFromTileList(laser.
+			getTraversedTiles(board,currentPlayer));
             for(int i=0; i < points.size()-1; i++){
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setColor(Color.BLUE);
@@ -115,8 +125,11 @@ public class GameBoard extends JPanel{
     }
 
     public void animateLaser(Graphics g){
-        ArrayList<Point> points = getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
-        ArrayList<Point> animatedSegment = animatedLaserSegment(points.get(laserSegmentsDrawn), points.get(laserSegmentsDrawn+1));
+        ArrayList<Point> points = 
+		getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
+        ArrayList<Point> animatedSegment = 
+		animatedLaserSegment(points.get(laserSegmentsDrawn), 
+		points.get(laserSegmentsDrawn+1));
         for(int j=0; j < animatedSegment.size()-1; j++){
             Graphics2D g2 = (Graphics2D) g;
             g2.setColor(Color.BLUE);
@@ -272,9 +285,11 @@ public class GameBoard extends JPanel{
             int[] set = tiles.get(i);
             Point pt = board[set[0]][set[1]].getCenterPoint();
             if(set[0] == 0 && set[1] == 0){
-                pt = new Point((int)pt.getX(),(int)pt.getY()-((tileSize/2)-borderSize));
+                pt = new Point((int)pt.getX(),
+				(int)pt.getY()-((tileSize/2)-borderSize));
             }else if(set[0] == 7 && set[1] == 9){
-                pt = new Point((int)pt.getX(),(int)pt.getY()+((tileSize/2)-borderSize));
+                pt = new Point((int)pt.getX(),
+				(int)pt.getY()+((tileSize/2)-borderSize));
             }
             pointsPx.add(pt);
         }
