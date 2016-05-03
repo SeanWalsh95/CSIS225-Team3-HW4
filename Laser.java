@@ -2,10 +2,10 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 /**
- * Write a description of class Laser here.
+ * A Class to represent the laser in the game of khet
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Sean Walsh
+ * @version 1.0
  */
 public class Laser extends JComponent
 {
@@ -26,6 +26,9 @@ public class Laser extends JComponent
         return laserDetails;
     }
 
+    /**
+     * method to toggle showing the laser 
+     */
     public void toggleShowLaser(){
         if(showLaser){
             this.setVisible(true);
@@ -36,6 +39,13 @@ public class Laser extends JComponent
         }
     }
 
+    /**
+     * gets a list of tiles the laser moves across
+     * 
+     * @param board the game board
+     * @param team a string representing the team name
+     * @return ArrayList of int[]'s arrays representing traverced points
+     */
     public ArrayList<int[]> getTraversedTiles(GamePiece board[][], String team){
         if(team.equals("white"))
             return genTraversedTiles(board, whiteStartPos ,
@@ -44,6 +54,12 @@ public class Laser extends JComponent
             return genTraversedTiles(board, redStartPos , redStartDirection);
     }
 
+    /**
+     * genorates a list of traverced tiles internaly for this calss
+     * @param board the game board
+     * @stPt the starting point of the laser
+     * @return ArrayList of int[]'s representing traverced points
+     */
     private ArrayList<int[]> genTraversedTiles(GamePiece board[][], int[] stPt,
 	int stDir){
         int[] p = new int[]{stPt[0],stPt[1]};
@@ -82,6 +98,12 @@ public class Laser extends JComponent
         return tiles;
     } 
 
+    /**
+     * method to step the laser a tile in its current dierction
+     * @param p point to change
+     * @param direction direction to move
+     * @return the steped point
+     */
     private int[] step(int[] p, int direction){
         if(direction == 0){//north
             p[0] = p[0]-1;

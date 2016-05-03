@@ -5,8 +5,8 @@ import java.awt.event.*;
 /**
  * Write a description of class board here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Team 3
+ * @version 1.0
  */
 public class GameBoard extends JPanel{
     private GamePiece[][] board = new GamePiece[8][10];
@@ -23,7 +23,7 @@ public class GameBoard extends JPanel{
 
     /**
      * Basic constructor for the GameBoard class initializes the board to 
-	 * the classic setup
+     * the classic setup
      */
     public GameBoard(){
         whiteOnlyTiles = new ArrayList<int[]>();
@@ -68,14 +68,14 @@ public class GameBoard extends JPanel{
         for(int[] p : whiteOnlyTiles){
             g.setColor(new Color(180,180,180));
             g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)),
-			topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
+                topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
         //draw red only tules
         for(int[] p : redOnlyTiles){
             g.setColor(new Color(255,85,80));
             g.fillRect(leftBorder+(p[1]*(tileSize+borderSize)), 
-			topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
+                topBorder+(p[0]*(tileSize+borderSize)),tileSize,tileSize);
         }
 
         //draw grid
@@ -93,23 +93,25 @@ public class GameBoard extends JPanel{
         //draw pieces
         for(int row=0; row < 8; row++)
             for(int col=0; col < 10; col++){
-                board[row][col].setXYpos(leftBorder+(col*(tileSize+borderSize)),
-				topBorder+(row*(tileSize+borderSize)));
+                board[row][col].
+				setXYpos(leftBorder+(col*(tileSize+borderSize)),
+                    topBorder+(row*(tileSize+borderSize)));
                 if(!(board[row][col] instanceof NullPiece)){
                     Image gpImage = 
-					Toolkit.getDefaultToolkit().
-					getImage(board[row][col].getImage());
-                    g.drawImage(gpImage, leftBorder+(col*(tileSize+borderSize)),
-					topBorder+
-					(row*(tileSize+borderSize)),tileSize,tileSize, this);
+                        Toolkit.getDefaultToolkit().
+                        getImage(board[row][col].getImage());
+                    g.drawImage(
+					gpImage, leftBorder+(col*(tileSize+borderSize)),
+                        topBorder+
+                        (row*(tileSize+borderSize)),tileSize,tileSize, this);
                 }
             }
 
         //draw laser
         if(laser.showLaser){
             ArrayList<Point> points = 
-			getPxPointFromTileList(laser.
-			getTraversedTiles(board,currentPlayer));
+                getPxPointFromTileList(laser.
+                    getTraversedTiles(board,currentPlayer));
             for(int i=0; i < points.size()-1; i++){
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setColor(Color.BLUE);
@@ -121,39 +123,6 @@ public class GameBoard extends JPanel{
                     (int)points.get(i+1).getY()
                 );
             }
-        }
-    }
-
-    public void animateLaser(Graphics g){
-        ArrayList<Point> points = 
-		getPxPointFromTileList(laser.getTraversedTiles(board,currentPlayer));
-        ArrayList<Point> animatedSegment = 
-		animatedLaserSegment(points.get(laserSegmentsDrawn), 
-		points.get(laserSegmentsDrawn+1));
-        for(int j=0; j < animatedSegment.size()-1; j++){
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setColor(Color.BLUE);
-            g2.setStroke(new BasicStroke(3));
-            g2.drawLine(
-                (int)animatedSegment.get(j).getX(),
-                (int)animatedSegment.get(j).getY(),
-                (int)animatedSegment.get(j+1).getX(),
-                (int)animatedSegment.get(j+1).getY()
-            );
-            //pause drawing here
-        }
-        if(laserSegmentsDrawn < points.size()-1)
-            laserSegmentsDrawn++;
-        for(int i=0; i < laserSegmentsDrawn-1; i++){
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setColor(Color.BLUE);
-            g2.setStroke(new BasicStroke(3));
-            g2.drawLine(
-                (int)points.get(i).getX(),
-                (int)points.get(i).getY(),
-                (int)points.get(i+1).getX(),
-                (int)points.get(i+1).getY()
-            );
         }
     }
 
@@ -253,26 +222,6 @@ public class GameBoard extends JPanel{
         ((Obelisk)board[tileA[0]][tileA[1]]).stacked = false;
     }
 
-    public ArrayList<Point> animatedLaserSegment(Point a, Point b){
-        ArrayList<Point> segment = new ArrayList<Point>();
-        if(a.getX() != b.getX()){
-            if(a.getX() - b.getX() > 0)
-                for(int i=(int)a.getX(); i >= b.getX(); i--)
-                    segment.add(new Point(i,(int)a.getY()));
-            else
-                for(int i=(int)b.getX(); i >= a.getX(); i--)
-                    segment.add(new Point(i,(int)a.getY()));
-        }else{
-            if(a.getY() - b.getY()  > 0)
-                for(int i=(int)a.getY(); i >= b.getY(); i--)
-                    segment.add(new Point((int)a.getX(),i));
-            else
-                for(int i=(int)b.getY(); i >= a.getY(); i--)
-                    segment.add(new Point((int)a.getX(),i));
-        }
-        return segment;
-    }
-
     /**
      * Generates the ArrayList of points the laser will be drawn in
      * 
@@ -286,10 +235,10 @@ public class GameBoard extends JPanel{
             Point pt = board[set[0]][set[1]].getCenterPoint();
             if(set[0] == 0 && set[1] == 0){
                 pt = new Point((int)pt.getX(),
-				(int)pt.getY()-((tileSize/2)-borderSize));
+                    (int)pt.getY()-((tileSize/2)-borderSize));
             }else if(set[0] == 7 && set[1] == 9){
                 pt = new Point((int)pt.getX(),
-				(int)pt.getY()+((tileSize/2)-borderSize));
+                    (int)pt.getY()+((tileSize/2)-borderSize));
             }
             pointsPx.add(pt);
         }
