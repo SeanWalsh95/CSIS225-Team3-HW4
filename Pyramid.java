@@ -14,7 +14,7 @@ class Pyramid extends GamePiece{
         team = "neutral";
         direction = 0;
     }
-    
+
     /**
      * Basic constructor for the Pyramid class
      * 
@@ -31,7 +31,7 @@ class Pyramid extends GamePiece{
      * Method to find how the GamePeice affects the laser
      * 
      * @param laserDirection the direction the laser is moving prior to 
-	 * entering the GamePeice
+     * entering the GamePeice
      * @return the direction of the laser when exiting the game peice 
      * returns -1 if the gmaePeice is destroyed by the laser
      */

@@ -6,7 +6,7 @@
  */
 class Obelisk extends GamePiece{
     protected boolean stacked;
-    
+
     /**
      * Basic constructor for the Obelisk class
      */
@@ -16,7 +16,7 @@ class Obelisk extends GamePiece{
         stacked = false;
         direction = 0;
     }
-    
+
     /**
      * Basic constructor for the Obelisk class
      * 
@@ -28,8 +28,7 @@ class Obelisk extends GamePiece{
         this.team = team;
         this.direction = direction;
     }
-    
-    
+
     /**
      * Basic constructor for the Obelisk class
      * 
@@ -43,13 +42,13 @@ class Obelisk extends GamePiece{
         this.direction = direction;
         this.stacked = stacked;
     }
-    
+
     /**
      * Method to get the directory path of an image that represents the 
-	 * GamePeice
+     * GamePeice
      * 
      * @return a string that represents the path of the image relative to 
-	 * the working directory
+     * the working directory
      */
     public String getImage(){
         if(stacked)
@@ -57,12 +56,12 @@ class Obelisk extends GamePiece{
         else
             return image+team+name+direction+".png";
     }
-    
+
     /**
      * Method to find how the GamePeice affects the laser
      * 
      * @param laserDirection the direction the laser is moving prior to 
-	 * entering the GamePeice
+     * entering the GamePeice
      * @return the direction of the laser when exiting the game peice 
      * returns -1 if the gmaePeice is destroyed by the laser
      */

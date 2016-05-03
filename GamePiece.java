@@ -9,7 +9,7 @@ public abstract class GamePiece
     String image = "resources\\gamePieces\\";
     String name, team;
     int direction;  //direction peice is pointing
-    
+
     int xPos, yPos;
 
     /**
@@ -45,7 +45,7 @@ public abstract class GamePiece
      */
     public Point getCenterPoint(){
         return new Point(xPos+(GameBoard.tileSize/2),
-        yPos+(GameBoard.tileSize/2));
+            yPos+(GameBoard.tileSize/2));
     }
 
     /**
@@ -58,7 +58,6 @@ public abstract class GamePiece
         direction = ((((direction+90)/90)%4)*90);
     }
 
-    
     /**
      * method that rotates the game peice 90 counterclockwise
      * 
@@ -70,7 +69,7 @@ public abstract class GamePiece
         this.rotate();
         this.rotate();
     }
-    
+
     /**
      * method that rotates the game peice 90 clockwise
      * 
@@ -80,7 +79,7 @@ public abstract class GamePiece
     public void rotateRight(){
         this.rotate();
     }
-    
+
     /**
      * Method to get the directory path of an image that represents the 
      * GamePeice

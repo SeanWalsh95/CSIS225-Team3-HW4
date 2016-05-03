@@ -8,5 +8,5 @@
  */
 public class NullPiece extends GamePiece
 {
-    
+
 }
