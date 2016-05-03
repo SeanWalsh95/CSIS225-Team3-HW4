@@ -3,10 +3,10 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 /**
- * Write a description of class board here.
+ * JPanel to draw the board on
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Team 3
+ * @version 1.0
  */
 public class GameBoard extends JPanel{
     private GamePiece[][] board = new GamePiece[8][10];
