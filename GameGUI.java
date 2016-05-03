@@ -12,10 +12,10 @@ import java.io.*;
 import java.net.URISyntaxException;
 
 /**
- * Class GUI - write a description of the class here
+ * This is the game GUI which launches the applet and is used to play the game
  * 
- * @author (your name) 
- * @version (a version number)
+ * @author Team 3
+ * @version 1.5
  */
 public class GameGUI extends JApplet
 implements MouseListener, ActionListener, MouseMotionListener{
@@ -27,7 +27,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
     JLabel lastPointLBL, infoLBL, currentPlayerLBL, moveUnitLBL;
 
     private boolean redMove = false, whiteMove = true, 
-	turnEnded = false, gameOver = false;
+    turnEnded = false, gameOver = false;
     private boolean customSetup = false, redSetup = false, whiteSetup = false;
 
     private int xClickA, yClickA, xClickB, yClickB;
@@ -132,9 +132,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
         //set the mouseCursor image
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Image mouseCursor = 
-		toolkit.getImage("resources/images/mouseCursor/mouseCursorFinal.png");
+            toolkit.
+            getImage("resources/images/mouseCursor/mouseCursorFinal.png");
         Cursor a = toolkit.createCustomCursor(mouseCursor , 
-		new Point(this.getX(),this.getY()), "img");
+                new Point(this.getX(),this.getY()), "img");
         setCursor(a);
 
         // provide any initialisation necessary for your JApplet
@@ -148,10 +149,10 @@ implements MouseListener, ActionListener, MouseMotionListener{
     public void selectStartingPlayer(){
         String[] jOptionButtons = { "Red", "White" };
         int playerStartChoice = 
-		JOptionPane.showOptionDialog(null, "Who will start?", 
-		"choose a starting player", 
+            JOptionPane.showOptionDialog(null, "Who will start?", 
+                "choose a starting player", 
                 JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons, 
-				jOptionButtons[1]);
+                jOptionButtons[1]);
         if(playerStartChoice == 0)
             setPlayerRed();
 
@@ -160,15 +161,16 @@ implements MouseListener, ActionListener, MouseMotionListener{
     }
 
     /**
-     * Presents user with the option of setting the starting board configuration
+     * Presents user with the option of setting the 
+     * starting board configuration
      */
     public void selectStartingConfig(){
         String[] jOptionButtons = { "Classic", "Imhotep", "Dynasty", "Custom" };
         int playerStartChoice = 
-		JOptionPane.showOptionDialog(null, "starting layout?",
-		"choose a starting layout", 
+            JOptionPane.showOptionDialog(null, "starting layout?",
+                "choose a starting layout", 
                 JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons, 
-				jOptionButtons[0]);
+                jOptionButtons[0]);
         if(playerStartChoice == 0)
             board.setBoardClassic();
         else if(playerStartChoice == 1){
@@ -234,7 +236,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * public void mouseMoved is triggered when event is moved
-     * @param MouseEvent e is the event that the mouse creates
+     * @param e MouseEvent is the event that the mouse creates
      */
     public void mouseMoved(MouseEvent e)
     {
@@ -247,9 +249,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
         {
 
             //when mouse enters a the Play Game button 
-			//change the color of button
+            //change the color of button
             if(x >= 144 && x <= 144+241 && y >= 27 &&
-			y <= 27+56 && playButton == false)
+            y <= 27+56 && playButton == false)
             {
                 playButton = true;
                 repaint();
@@ -258,7 +260,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
             //when mouse enters a the Rules button change the color of button
             else if(x >= 144 && x <= 144+241 && y >= 91 &&
-			y <= 75+56 && rulesButton == false)
+            y <= 75+56 && rulesButton == false)
             {
                 rulesButton = true;
                 repaint();
@@ -267,7 +269,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
             //when mouse enters a the Quit button change the color of button
             else if(x >= 144 && x <= 144+241 && y >= 154 &&
-			y <= 154+56 && quitButton == false)
+            y <= 154+56 && quitButton == false)
             {
                 quitButton = true;
                 repaint();
@@ -388,6 +390,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * method to find the location of press of the mouse
+     * @param e MouseEvent is the event that the mouse creates
      */
     public void mousePressed( MouseEvent e ) {
         //when the mouse is pushed show the images for pushed buttons
@@ -585,7 +588,8 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * method to find the released location of the mouse and perform and action
-	 * based on the diffrence between the press and the release
+     * based on the diffrence between the press and the release
+     * @param e MouseEvent is the event that the mouse creates
      */
     public void mouseReleased( MouseEvent e ) {
         //when the mouse is released show the images for highlighted button
@@ -601,9 +605,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
             int[] tileA = getTile(xClickA,yClickA);
             int[] tileB = getTile(xClickB,yClickB);
             //lastPointLBL.setText("["+tileA[0]+","+tileA[1]+"] 
-			//["+tileB[0]+","+tileB[1]+"]");
+            //["+tileB[0]+","+tileB[1]+"]");
             //lastPointLBL.setText("["+xClickA+","+yClickA+"] 
-			//["+xClickB+","+yClickB+"]");
+            //["+xClickB+","+yClickB+"]");
             if(customSetup){
                 if((tileA[0] == tileB[0] && tileA[1] == tileB[1])){
                     if (e.getButton() == MouseEvent.BUTTON1)
@@ -618,21 +622,21 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 if(!turnEnded){
                     if( tileA[0] == tileB[0] && tileA[1] == tileB[1]){//rotate
                         if (checkOwnership(board.getPiece(tileA[0],tileA[1])) 
-							&& e.getButton() == MouseEvent.BUTTON1)
+                        && e.getButton() == MouseEvent.BUTTON1)
                             rotateGamePiece(tileA,true);
                         else
                             rotateGamePiece(tileA,false);
                     }else if(checkOwnership(board.getPiece(tileA[0],tileA[1])) 
-						&& checkRangeOfMove(tileA,tileB)){//move
+                    && checkRangeOfMove(tileA,tileB)){//move
                         movingGamePiece(tileA,tileB);
                     }
                 }else{
                     informUserPopup("you have no more moves left this turn " +
-					"\n end your turn","Error");
+                        "\n end your turn","Error");
                 }
             }else{
                 informUserPopup("the game is over thanks for playing",
-				"Game Over");
+                    "Game Over");
             }
         }
 
@@ -815,7 +819,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * public void mouseClicked creates an event when a mouse is clicked
-     * @param MouseEvent e is the event that the mouse creates
+     * @param e MouseEvent is the event that the mouse creates
      */
     public void mouseClicked( MouseEvent e ) 
     {
@@ -1006,7 +1010,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
                             endTurnButton.setEnabled(false);
                             board.setBoardCustom();
                             informUserPopup("Move pieces to starting positions"
-							,"Move pieces");
+                            ,"Move pieces");
                         }
 
                     }
@@ -1139,9 +1143,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * method to rotate a given game peice
      * 
      * @param tile an int array of size 2 that holds the position of the Piece 
-	 * on the board
+     * on the board
      * @param rotateRight boolean to indacate weather the piece should be 
-	 * turned right or left
+     * turned right or left
      */
     public void rotateGamePiece(int[] tile, boolean rotateRight){
         GamePiece gp = board.getPiece(tile[0],tile[1]);
@@ -1159,9 +1163,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * method to move game piece on the board from one tile to another
      * 
      * @param tileA an int array of size 2 that holds the position of the piece
-	 * to be moved
+     * to be moved
      * @param tileB an int array of size 2 that holds the position of the tile 
-	 * the peice is to be moved to
+     * the peice is to be moved to
      */
     public void movingGamePiece(int[] tileA, int[] tileB){
         GamePiece gpA = board.getPiece(tileA[0],tileA[1]);
@@ -1179,15 +1183,16 @@ implements MouseListener, ActionListener, MouseMotionListener{
                 if(ob.stacked){
                     String[] jOptionButtons = { "unstack", "move" };
                     int playerStartChoice = JOptionPane.showOptionDialog(null,
-					"Do you want to move or unstack?", "move or unstack", 
+                            "Do you want to move or unstack?",
+                            "move or unstack", 
                             JOptionPane.PLAIN_MESSAGE, 0, null, jOptionButtons,
-							jOptionButtons[1]);
+                            jOptionButtons[1]);
                     if(playerStartChoice == 0)
                         unstack = true;
                 }
 
                 //check if they want to unstack or move the stack store in 
-				//unstack
+                //unstack
                 if(ob.stacked && unstack){
                     board.unstackObelisk(tileA,tileB);
                     turnEnded = true;
@@ -1209,9 +1214,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * method to check if a move is valid according to the game rules
      * 
      * @param a an int array of size 2 that holds the position of the piece 
-	 * to be moved
+     * to be moved
      * @param b an int array of size 2 that holds the position of the tile the 
-	 * peice is to be moved to
+     * peice is to be moved to
      * @return true if the move is a valid move false if it is not
      */
     public boolean checkValidMove(int[] a, int[] b){
@@ -1225,9 +1230,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
             informUserPopup("only djed can swap","Error");
             return false;
         }else if((gpA instanceof Djed) && (gpB instanceof Pharaoh ||
-		gpB instanceof Djed)){
+            gpB instanceof Djed)){
             informUserPopup("djed cant swap with pharaoh's or other djed's",
-			"Error");
+                "Error");
             return false;
         }
 
@@ -1237,13 +1242,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * 
      * method to check if a tile is able to be moved into. i.e. the tile to be 
-	 * moved to is not exclusively a red or white tile
+     * moved to is not exclusively a red or white tile
      * @param a an int array of size 2 that holds the position of the piece 
-	 * to be moved
+     * to be moved
      * @param b an int array of size 2 that holds the position of the tile the 
-	 * peice is to be moved to
+     * peice is to be moved to
      * @return true if the tile is able to be moved to false if there is a 
-	 * problem with the tile
+     * problem with the tile
      * 
      */
     public boolean checkGoodTile(int[] a, int[] b){
@@ -1270,7 +1275,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * method that checks to see who owns a given GamePiece
      * 
-     * @piece the GamePiece to be checked
+     * @param piece the GamePiece to be checked
      * @return true if current player owns the piece, false if they do not
      */
     public boolean checkOwnership(GamePiece piece){
@@ -1284,12 +1289,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * method that checks to see if the intended position to move a given 
-	 * peice is within one tile in any direction
+     * peice is within one tile in any direction
      * 
      * @param a an int array of size 2 that holds the position of the piece 
-	 * to be moved
+     * to be moved
      * @param b an int array of size 2 that holds the position of the tile the 
-	 * peice is to be moved to
+     * peice is to be moved to
      * @return true if in range false if out of range
      */
     public boolean checkRangeOfMove(int[] a, int[] b){
@@ -1349,7 +1354,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * Paint method for applet.
      * 
-     * @param  g   the Graphics object for this applet
+     * @param g the Graphics object for this applet
      */
     public void paint(Graphics g)
     {
@@ -1596,9 +1601,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * paints a white rectangele the current size of the applet to clear the 
-	 * screen
+     * screen
      * 
-     * @param  g   the Graphics object for this applet
+     * @param g the Graphics object for this applet
      */
     public void clearWindow(Graphics g){
         g.setColor(Color.WHITE);
@@ -1611,24 +1616,24 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * @param x position in px to be converted into a column location
      * @param y position in px to be converted into a row location
      * @return an int array of size 2 containing the translated tile 
-	 * coordinates
+     * coordinates
      * bolth indices will be -1 if the x, y coordinates are out of the bounds 
-	 * of the board
+     * of the board
      * 
      */
     public int[] getTile(int x, int y){
         int topBorder = 
-		(this.getHeight()-((board.tileSize+board.borderSize)*8))/2;
+            (this.getHeight()-((board.tileSize+board.borderSize)*8))/2;
         int leftBorder = 
-		(this.getWidth()-((board.tileSize+board.borderSize)*10))/2;
+            (this.getWidth()-((board.tileSize+board.borderSize)*10))/2;
 
         //int topBorder = (this.getHeight()-408)/2;
         //int leftBorder = (this.getWidth()-510)/2; 
 
         int tileCol = (x-(leftBorder+board.borderSize))/
-		(board.tileSize+board.borderSize);
+            (board.tileSize+board.borderSize);
         int tileRow = (y-(topBorder+board.borderSize))/
-		(board.tileSize+board.borderSize);
+            (board.tileSize+board.borderSize);
 
         if(tileRow >= 0 && tileRow < 8 && tileCol >= 0 && tileCol < 10)
             return new int[]{tileRow,tileCol};
@@ -1708,21 +1713,21 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * Returns parameter information about this JApplet. 
      * Returns information about the parameters than are understood by this 
-	 * JApplet.
+     * JApplet.
      * An applet should override this method to return an array of Strings 
      * describing these parameters. 
      * Each element of the array should be a set of three Strings containing 
      * the name, the type, and a description.
      *
      * @return a String[] representation of parameter information about this 
-	 * JApplet
+     * JApplet
      */
     public String[][] getParameterInfo()
     {
         // provide parameter information about the applet
         String paramInfo[][] = {
                 {"firstParameter",    "1-10",
-				"description of first parameter"},
+                    "description of first parameter"},
                 {"status", "boolean", "description of second parameter"},
                 {"images",   "url",     "description of third parameter"}
             };
@@ -1736,7 +1741,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
         if(board.laser.effect.equals("hit piece")){
             informUserPopup(board.laser.laserDetails,"Piece Destroyed");
             GamePiece gp = board.getPiece(board.laser.lastHit[0],
-			board.laser.lastHit[1]);
+                    board.laser.lastHit[1]);
             if(gp.name.equals("Pharaoh")){
                 String winner;
                 if(gp.team.equals("white")){
@@ -1758,7 +1763,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
     public static void informUserPopup(String message, String titleBar)
     {
         JOptionPane.showMessageDialog(null, message, titleBar,
-		JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     //===============================================
@@ -1777,8 +1782,9 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = 
-			new File(getClass().getResource("resources\\images\\backgrounds")
-			.toURI());
+                new File(getClass().
+                    getResource("resources\\images\\backgrounds")
+                    .toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[0]);
@@ -1811,7 +1817,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\backgrounds").toURI());
+                    getResource("resources\\images\\backgrounds").toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[1]);
@@ -1837,7 +1843,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\backgrounds").toURI());
+                    getResource("resources\\images\\backgrounds").toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[5]);
@@ -1856,9 +1862,11 @@ implements MouseListener, ActionListener, MouseMotionListener{
     public void setUpPlayGame()
     {
         int appletWidth = 
-		(((GameBoard.tileSize+GameBoard.borderSize)*10)+GameBoard.tileSize*2);
+            (((GameBoard.tileSize+GameBoard.borderSize)*10)+
+                GameBoard.tileSize*2);
         int appletHeight = 
-		(((GameBoard.tileSize+GameBoard.borderSize)*8)+GameBoard.tileSize*2);
+            (((GameBoard.tileSize+GameBoard.borderSize)*8)+
+                GameBoard.tileSize*2);
 
         this.setSize(new Dimension(appletWidth,appletHeight));
 
@@ -1922,7 +1930,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\backgrounds").toURI());
+                    getResource("resources\\images\\backgrounds").toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[2]);
@@ -1949,7 +1957,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\backgrounds").toURI());
+                    getResource("resources\\images\\backgrounds").toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[3]);
@@ -1976,7 +1984,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\backgrounds").toURI());
+                    getResource("resources\\images\\backgrounds").toURI());
             File[] backgroundArray = backgroundSounds.listFiles();
             Arrays.sort(backgroundArray);
             Image background = ImageIO.read(backgroundArray[4]);
@@ -1991,7 +1999,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
     // 
     //         //initializes the classicButton
     //         classicButton.setLocation(35,500/5 - 10); //(x,y) left is  - 
-	//and right is +
+    //and right is +
     //         classicButton.setSize(100,50);  //lenght,height
     // 
     //         //initializes the DynastyButton
@@ -2012,7 +2020,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
 
     /**
      * Generate a random number for the button sounds and sets the sound to 
-	 * play
+     * play
      */
     public void playButtonSound() {
         //set the random number to play random button sound
@@ -2040,7 +2048,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
         //plays random button sound from button names
         play( getDocumentBase(), buttonSound );
     }
-    
+
     /**
      * Plays some fun audio when the game ends
      */
@@ -2065,7 +2073,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
         if(diceNum == 1)
         {
             menuAudio = 
-			"resources/sounds/backgroundSounds/pharaoh ramses ii.au";
+            "resources/sounds/backgroundSounds/pharaoh ramses ii.au";
         }
         if(diceNum == 2)
         {
@@ -2088,13 +2096,14 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * fetches the Classic board
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintClassicBoard(Graphics g)
     {
         try
         {
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\boards\\scaled").toURI());
+                    getResource("resources\\images\\boards\\scaled").toURI());
             File[] boardArray = backgroundSounds.listFiles();
             Arrays.sort(boardArray);
             Image classicBoard = ImageIO.read(boardArray[0]);
@@ -2106,13 +2115,14 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * fetches the Dynasty board
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintDynastyBoard(Graphics g)
     {
         try
         {
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\boards\\scaled").toURI());
+                    getResource("resources\\images\\boards\\scaled").toURI());
             File[] boardArray = backgroundSounds.listFiles();
             Arrays.sort(boardArray);
             Image dynastyBoard = ImageIO.read(boardArray[1]);
@@ -2124,13 +2134,14 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * fetches the Imhotep board
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintImhotepBoard(Graphics g)
     {
         try
         {
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\boards\\scaled").toURI());
+                    getResource("resources\\images\\boards\\scaled").toURI());
             File[] boardArray = backgroundSounds.listFiles();
             Arrays.sort(boardArray);
             Image imhotepBoard = ImageIO.read(boardArray[2]);
@@ -2142,13 +2153,14 @@ implements MouseListener, ActionListener, MouseMotionListener{
     /**
      * fetches the empty board
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintEmptyBoard(Graphics g)
     {
         try
         {
             File backgroundSounds = new File(getClass().
-			getResource("resources\\images\\boards\\scaled").toURI());
+                    getResource("resources\\images\\boards\\scaled").toURI());
             File[] boardArray = backgroundSounds.listFiles();
             Arrays.sort(boardArray);
             Image customBoard = ImageIO.read(boardArray[3]);
@@ -2161,6 +2173,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Unselected
      * Play game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedPlayGameButton(Graphics g)
     {
@@ -2170,12 +2183,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image playButtonReleased = ImageIO.read(backgroundArray[6]);
             g.drawImage(playButtonReleased, 144, 27, this);
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2185,6 +2198,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Unselected
      * Rules Button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedRulesButton(Graphics g)
     {
@@ -2194,12 +2208,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image rulesButtonReleased = ImageIO.read(backgroundArray[7]);
             g.drawImage(rulesButtonReleased, 144, 91, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2209,6 +2223,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Unselected
      * quit button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedQuitButton(Graphics g)
     {
@@ -2218,12 +2233,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image quitButtonReleased = ImageIO.read(backgroundArray[8]);
             g.drawImage(quitButtonReleased, 144, 154, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2233,6 +2248,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * Play game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightPlayGameButton(Graphics g)
     {
@@ -2242,12 +2258,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image playButtonHighlight = ImageIO.read(backgroundArray[0]);
             g.drawImage(playButtonHighlight, 144, 27, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2257,6 +2273,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * rules button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightRulesButton(Graphics g)
     {
@@ -2266,12 +2283,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image rulesHighlightButton = ImageIO.read(backgroundArray[1]);
             g.drawImage(rulesHighlightButton, 144, 91, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2281,6 +2298,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * quit button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightQuitButton(Graphics g)
     {
@@ -2290,12 +2308,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image quitButtonHighlight = ImageIO.read(backgroundArray[2]);
             g.drawImage(quitButtonHighlight, 144, 154, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2305,6 +2323,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * play game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedPlayGameButton(Graphics g)
     {
@@ -2314,12 +2333,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image playButtonPressed = ImageIO.read(backgroundArray[3]);
             g.drawImage(playButtonPressed, 144, 27, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2329,6 +2348,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * rules button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedRulesButton(Graphics g)
     {
@@ -2338,12 +2358,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image rulesButtonPressed = ImageIO.read(backgroundArray[4]);
             g.drawImage(rulesButtonPressed, 144, 91, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2353,6 +2373,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * quit button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedQuitButton(Graphics g)
     {
@@ -2362,12 +2383,12 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons").toURI());
+                    getResource("resources\\images\\buttons").toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image quitButtonPressed = ImageIO.read(backgroundArray[5]);
             g.drawImage(quitButtonPressed, 144, 154, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2381,6 +2402,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * back button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedBackButton(Graphics g)
     {
@@ -2390,12 +2412,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image BackButton = ImageIO.read(backgroundArray[0]);
             g.drawImage(BackButton, 5, 5, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2405,6 +2428,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * classic button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedClassicButton(Graphics g)
     {
@@ -2414,12 +2438,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image classicButton = ImageIO.read(backgroundArray[1]);
             g.drawImage(classicButton, 35, 90, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2429,6 +2454,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * Dynasty button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedDynastyButton(Graphics g)
     {
@@ -2438,12 +2464,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image dynastyButton = ImageIO.read(backgroundArray[2]);
             g.drawImage(dynastyButton, 35, 190, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2453,6 +2480,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * Imhotep button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedImhotepButton(Graphics g)
     {
@@ -2462,12 +2490,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image imhotepButton = ImageIO.read(backgroundArray[3]);
             g.drawImage(imhotepButton, 35, 290, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2477,6 +2506,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * Custom button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedCustomButton(Graphics g)
     {
@@ -2486,12 +2516,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image CustomButton = ImageIO.read(backgroundArray[4]);
             g.drawImage(CustomButton, 35, 390, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2501,6 +2532,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the unselected
      * start game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedStartGameButton(Graphics g)
     {
@@ -2510,12 +2542,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image StartButton = ImageIO.read(backgroundArray[5]);
             g.drawImage(StartButton, 745, 445, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2525,6 +2558,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * back button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedBackButton(Graphics g)
     {
@@ -2534,12 +2568,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image BackButton = ImageIO.read(backgroundArray[6]);
             g.drawImage(BackButton, 5, 5, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2549,6 +2584,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * classic button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedClassicButton(Graphics g)
     {
@@ -2558,12 +2594,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image classicButton = ImageIO.read(backgroundArray[7]);
             g.drawImage(classicButton, 35, 90, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2573,6 +2610,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * dynasty button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedDynastyButton(Graphics g)
     {
@@ -2582,12 +2620,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image dynastyButton = ImageIO.read(backgroundArray[8]);
             g.drawImage(dynastyButton, 35, 190, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2597,6 +2636,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * Imhotep button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedImhotepButton(Graphics g)
     {
@@ -2606,12 +2646,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image imhotepButton = ImageIO.read(backgroundArray[9]);
             g.drawImage(imhotepButton, 35, 290, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2621,6 +2662,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * custom button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedCustomButton(Graphics g)
     {
@@ -2630,12 +2672,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image CustomButton = ImageIO.read(backgroundArray[10]);
             g.drawImage(CustomButton, 35, 390, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2645,6 +2688,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Highlighted
      * start game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedStartGameButton(Graphics g)
     {
@@ -2654,12 +2698,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image StartButton = ImageIO.read(backgroundArray[11]);
             g.drawImage(StartButton, 745, 445, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2669,6 +2714,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * back button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedBackButton(Graphics g)
     {
@@ -2678,12 +2724,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image BackButton = ImageIO.read(backgroundArray[12]);
             g.drawImage(BackButton, 5, 5, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2693,6 +2740,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * classic button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedClassicButton(Graphics g)
     {
@@ -2702,12 +2750,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image classicButton = ImageIO.read(backgroundArray[13]);
             g.drawImage(classicButton, 35, 90, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2717,6 +2766,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * Dynasty button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedDynastyButton(Graphics g)
     {
@@ -2726,12 +2776,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image dynastyButton = ImageIO.read(backgroundArray[14]);
             g.drawImage(dynastyButton, 35, 190, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2741,6 +2792,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * Imhotep button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedImhotepButton(Graphics g)
     {
@@ -2750,12 +2802,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image imhotepButton = ImageIO.read(backgroundArray[15]);
             g.drawImage(imhotepButton, 35, 290, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2765,6 +2818,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * custom button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedCustomButton(Graphics g)
     {
@@ -2774,12 +2828,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image CustomButton = ImageIO.read(backgroundArray[16]);
             g.drawImage(CustomButton, 35, 390, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2789,6 +2844,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * start game button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedStartGameButton(Graphics g)
     {
@@ -2798,12 +2854,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\SelectAGameMenu").toURI());
+                    getResource("resources\\images\\buttons\\SelectAGameMenu").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image StartButton = ImageIO.read(backgroundArray[17]);
             g.drawImage(StartButton, 745, 445, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2816,6 +2873,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Unselected
      * next button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedNextButton(Graphics g)
     {
@@ -2825,12 +2883,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image nextButton = ImageIO.read(backgroundArray[0]);
             g.drawImage(nextButton, 483, 818, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2840,6 +2899,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Unselected
      * previous button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintUnselectedPreviousButton(Graphics g)
     {
@@ -2849,12 +2909,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image previousButton = ImageIO.read(backgroundArray[1]);
             g.drawImage(previousButton, 5, 819, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2864,6 +2925,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the highlighted
      * next button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedNextButton(Graphics g)
     {
@@ -2873,12 +2935,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image previousButton = ImageIO.read(backgroundArray[3]);
             g.drawImage(previousButton, 483, 818, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2888,6 +2951,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the highlighted
      * previous button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintHighlightedPreviousButton(Graphics g)
     {
@@ -2897,12 +2961,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image previousButton = ImageIO.read(backgroundArray[2]);
             g.drawImage(previousButton, 5, 819, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
@@ -2912,6 +2977,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * next button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedNextButton(Graphics g)
     {
@@ -2921,12 +2987,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image previousButton = ImageIO.read(backgroundArray[4]);
             g.drawImage(previousButton, 483, 818, this);    
-			//image, width, height
+            //image, width, height
         }
         catch(Exception a){}
     }
@@ -2935,6 +3002,7 @@ implements MouseListener, ActionListener, MouseMotionListener{
      * fetches the Pressed
      * Previous button
      * to be used for painting
+     * @param g A graphics object
      */
     public void paintPressedPreviousButton(Graphics g)
     {
@@ -2944,12 +3012,13 @@ implements MouseListener, ActionListener, MouseMotionListener{
             //then we sort the array lexiographically
             //draw the image we want from the array
             File pressedButton = new File(getClass().
-			getResource("resources\\images\\buttons\\RulesScreen").toURI());
+                    getResource("resources\\images\\buttons\\RulesScreen").
+                    toURI());
             File[] backgroundArray = pressedButton.listFiles();
             Arrays.sort(backgroundArray);
             Image previousButton = ImageIO.read(backgroundArray[5]);
             g.drawImage(previousButton, 5, 819, this);    
-			//image, width, height
+            //image, width, height
 
         }
         catch(Exception a){}
